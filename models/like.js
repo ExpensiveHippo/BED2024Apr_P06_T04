@@ -2,16 +2,17 @@ const SQL = require("../mssql");
 const DBCONFIG = require("../dbConfig");
 
 class Like {
-    constructor(userId, postId) {
+    constructor(likeId, userId, contentType, contentId) {
+        this.likeId = likeId;
         this.userId = userId;
-        this.postId = postId;
+        this.contentType = contentType;
+        this.contentId = contentId;
     }
 
     // Create a like when user likes a post
     static async createLike(newLike) {
         try {
             const connection = await SQL.connect(DBCONFIG);
-
             const sqlQuery = `INSERT INTO Likes (userId, postId) VALUES (@userId, @postId);`;
 
             const request = connection.request();
@@ -26,8 +27,7 @@ class Like {
         }
         finally {
             connection.close();
-        }
-        
+        } 
     }
 
     // Delete like when user unlikes a post
@@ -75,13 +75,18 @@ class Like {
     // Retrieve all the likes a post has
     static async getLikesForPost(postId) {
         try {
-            const sqlQuery = `SELECT * FROM Likes WHERE postId = ${postId}`;
-            
             const connection = await SQL.connect(DBCONFIG);
+            const sqlQuery = `SELECT * FROM Likes WHERE postId = ${postId}`;      
             const result = await connection.request().query(sqlQuery);
-    
             connection.close();
-            return result.recordset;
+            return result.recordset[0] ? result.recordset.map(row => {
+                new Like(
+                    row.likeId,
+                    row.userId,
+                    row.contentType,
+                    row.contentId
+                )
+            }) : null;
         } 
         catch (error) {
             connection.close();
@@ -98,7 +103,14 @@ class Like {
             const result = await connection.request().query(sqlQuery);
     
             connection.close();
-            return result.recordset;
+            return result.recordset[0] ? result.recordset.map(row => {
+                new Like(
+                    row.likeId,
+                    row.userId,
+                    row.contentType,
+                    row.contentId
+                )
+            }) : null;
         } 
         catch (error) {
             connection.close();
