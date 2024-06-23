@@ -4,8 +4,8 @@ const createLike = async (req, res) => {
     const newLike = req.body;
     
     try {
-        await Like.createLike(newLike);
-        res.status(201).send("Like added");
+        const result = await Like.createLike(newLike);
+        res.status(201).json(result);
     } 
     catch (error) {
         console.error(error);
