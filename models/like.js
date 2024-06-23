@@ -19,6 +19,7 @@ class Like {
             request.input("postId", newLike.postId);
 
             const result = await request.query(sqlQuery);
+            return this.getLikeById(result.recordset[0].id);
         } 
         catch (error) {
             console.error(error);
@@ -49,6 +50,26 @@ class Like {
             connection.close();
             console.error(error);
         } 
+    }
+
+    static async getLikeById(likeId) {
+        try {
+            const connection = await SQL.connect(DBCONFIG);
+            const sqlQuery = `SELECT * FROM Likes WHERE likeId = ${likeId}`
+            const result = await connection.request().query(sqlQuery); 
+            connection.close();
+
+            return result.recordset[0] ? new Report(
+                result.recordset[0].likeId,
+                result.recordset[0].userId,
+                result.recordset[0].contentType,
+                result.recordset[0].contentId
+            ) : null;
+        }
+        catch (error) {
+            connection.close();
+            console.error(error);
+        }
     }
 
     // Retrieve all the likes a post has
