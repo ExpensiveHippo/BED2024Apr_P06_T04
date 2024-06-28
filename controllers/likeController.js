@@ -13,7 +13,7 @@ const createLike = async (req, res) => {
     }
 }
 
-const deleteLike = async (req, rest) => {
+const deleteLike = async (req, res) => {
     const thisLike = req.body;
 
     try {
