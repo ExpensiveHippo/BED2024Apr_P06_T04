@@ -72,11 +72,11 @@ class Like {
         }
     }
 
-    // Retrieve all the likes a post has
-    static async getLikesForPost(postId) {
+    // Retrieve all the likes a content(post/comment) has
+    static async getLikesForContent(contentType, contentId) {
         try {
             const connection = await SQL.connect(DBCONFIG);
-            const sqlQuery = `SELECT * FROM Likes WHERE postId = ${postId}`;      
+            const sqlQuery = `SELECT * FROM Likes WHERE contentType = ${contentType} AND contentId = ${contentId}`;      
             const result = await connection.request().query(sqlQuery);
             connection.close();
             return result.recordset[0] ? result.recordset.map(row => {
