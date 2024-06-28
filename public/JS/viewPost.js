@@ -27,6 +27,11 @@ document.addEventListener('DOMContentLoaded', fetchPosts);
                             <h2>${post.title}</h2>
                             <p>${post.content}</p>
                         `;
+                        // Add onclick listener to postElement
+                        postElement.addEventListener('click', () => {
+                            window.location.href = `expandPost.html?postId=${post.postId}`;
+                        });
+        
                         postsContainer.appendChild(postElement);
                     });
                 } else {

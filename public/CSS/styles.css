@@ -69,7 +69,7 @@ body {
     padding: 13px;
     border-color: #ffffff;
     padding-right: 530px;
-    outline: none;
+    outline: none; 
     margin-bottom: 20px;
 }
 .create-post-button {
@@ -119,4 +119,53 @@ main {
 .post p {
     margin: 5px 0 0 0;
     font-size: 14px;
+}
+
+
+#postDetailContainer{
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    margin-left: 70px;
+    margin-right: 80px;
+    padding-left: 10px;
+    padding-right:1px;
+    padding: 50px;
+    background-color: #fff;
+    border-radius: 45px;
+}
+#postDetailContainer h2{
+    font-size: 35px;
+    margin-bottom: 20px;
+}
+#postDetailContainer p{
+    font-size: 20px;
+}
+#postDetailContainer h5{
+    font-size: 15px;
+    margin-bottom: -20px;
+    font-weight: normal;
+    margin-top: -8px;
+    margin-left: 10px;
+}
+.post-icons {
+    margin-top: 30px;
+    display: flex;
+    gap: 10px;
+}
+.post-icons button{
+    padding: 10px;
+    font-size: 32px;
+    color: transparent;
+    -webkit-text-stroke: 1px black; /* Apply outline */
+    border: none;
+    background-color: transparent;
+}
+.post-icons button:hover {
+    color: black;
+    -webkit-text-stroke: 1px black; /* Keep outline when clicked */
+}
+.post-icons button.clicked {
+    color: black;
+    -webkit-text-stroke: 1px black; /* Keep outline when clicked */
 }
