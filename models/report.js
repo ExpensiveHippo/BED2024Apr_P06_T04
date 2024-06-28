@@ -91,56 +91,6 @@ class Report {
             console.error(error);
         }
     }
-
-    // called when admin filters by industry
-    static async getReportsByIndustry(industry) {
-        try {
-            const connection = await SQL.connect(DBCONFIG);
-            const sqlQuery = `SELECT * FROM Reports WHERE industry = ${industry}`
-            const result = await connection.request().query(sqlQuery); 
-            connection.close();
-
-            return result.recordset[0] ? result.recordset.map(row => {
-                new Report(
-                    row.reportId, 
-                    row.contentType, 
-                    row.contentId,
-                    row.industry,
-                    row.reason,
-                    row.reportDateTime
-                ) 
-            }): null;
-        }
-        catch (error) {
-            connection.close();
-            console.error(error);
-        }
-    }
-
-    // called when admin filters by contentType
-    static async getReportsByContentType(contentType) {
-        try {
-            const connection = await SQL.connect(DBCONFIG);
-            const sqlQuery = `SELECT * FROM Reports WHERE contentType = ${contentType}`;
-            const result = await connection.request().query(sqlQuery); 
-            connection.close();
-
-            return result.recordset[0] ? result.recordset.map(row => {
-                new Report(
-                    row.reportId, 
-                    row.contentType, 
-                    row.contentId,
-                    row.industry,
-                    row.reason,
-                    row.reportDateTime
-                ) 
-            }): null;
-        }
-        catch (error) {
-            connection.close();
-            console.error(error);
-        }
-    }
 } 
 
 module.exports = Report;
