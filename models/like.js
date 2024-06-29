@@ -13,7 +13,7 @@ class Like {
     static async createLike(newLike) {
         try {
             const connection = await SQL.connect(DBCONFIG);
-            const sqlQuery = `INSERT INTO Likes (userId, postId) VALUES (@userId, @postId);`;
+            const sqlQuery = `INSERT INTO Likes (userId, postId) VALUES (@userId, @postId); SELECT SCOPE_IDENTITY() as id`;
 
             const request = connection.request();
             request.input("userId", newLike.userId);

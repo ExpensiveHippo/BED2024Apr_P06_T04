@@ -18,7 +18,8 @@ class Report {
 
             const sqlQuery = `INSERT INTO 
             Reports (contentType, contentId, industry, reason, reportDateTime) 
-            VALUES (@contentType, @contentId, @industry, @reason, @reportDateTime);`;
+            VALUES (@contentType, @contentId, @industry, @reason, @reportDateTime); 
+            SELECT SCOPE_IDENTITY() as reportId`;
 
             const request = connection.request();
             request.input("contentType", newReport.contentType);
