@@ -36,7 +36,7 @@ class Post{
     } 
     static async createPost(newPostData){
         const connection = await sql.connect(dbConfig);
-        const sqlQuery = `INSERT INTO Post (username,title,content) VALUES(@username,@title,@content); SELECT SCOPE_IDENTITY() AS postId;`
+        const sqlQuery = `INSERT INTO Posts (username,title,content) VALUES(@username,@title,@content); SELECT SCOPE_IDENTITY() AS postId;`
 
         const request = connection.request();
         request.input('username',sql.VarChar,newPostData.username);

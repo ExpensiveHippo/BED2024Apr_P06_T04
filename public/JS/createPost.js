@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const content = document.getElementById('content').value;
 
         try {
-            const response = await fetch('/Posts', {
+            const response = await fetch("/createPost", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (result.success) {
                 alert('Post created successfully!');
                 // Optionally, redirect to the posts page
-                window.location.href = '/posts.html';
+                window.location.href = '/post.html';
             } else {
                 alert('Failed to create post: ' + result.message);
             }
