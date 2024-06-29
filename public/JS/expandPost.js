@@ -32,9 +32,9 @@ async function fetchPostDetail() {
             <h2>${post.post.title}</h2>
             <p>${post.post.content}</p>
             <div class="post-icons">
-                <button class="fas fa-thumbs-up" onclick="this.style.color = (this.style.color === 'black' ? '' : 'black')"></button>
+                <button class="fas fa-heart" onclick="this.style.color = (this.style.color === 'black' ? '' : 'black')"></button>
                 <button class="fas fa-comment"></button>
-                <button class="fas fa-flag"></button>
+                <button class="fa fa-ellipsis-v" aria-hidden="true"></button>
             </div>
         `;
         const icons = postElement.querySelectorAll('.post-icons i');
