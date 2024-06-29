@@ -1,11 +1,11 @@
 module.exports = {
-    user: "", // Replace with your SQL Server login username
-    password: "", // Replace with your SQL Server login password
+    user: "testuser123", 
+    password: "test123", 
     server: "localhost",
-    database: "",
+    database: "testDB",
     trustServerCertificate: true,
     options: {
-        port: 1433, // Default SQL Server port
-        connectionTimeout: 60000, // Connection timeout in milliseconds
+        port: 1433, 
+        connectionTimeout: 60000,
     },
 };
