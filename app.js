@@ -19,6 +19,7 @@ app.use(express.static('public')); // serve static files (HTML, CSS, JS)
 //Endpoint
 app.get("/Posts",postController.getAllPosts)
 app.get("/Posts/:postId",postController.getPostById)
+app.post("/Posts", postController.createPost);
 // Start server
 app.listen(port, async() => {
     try{
