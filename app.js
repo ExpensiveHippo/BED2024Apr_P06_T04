@@ -15,9 +15,17 @@ app.use(express.static('public')); // serve static files (HTML, CSS, JS)
 
 
 //Endpoint
+
 app.get("/Posts",postController.getAllPosts)
 app.get("/Posts/:postId",postController.getPostById)
 app.post("/createPost", postController.createPost);
+app.post('/login', userController.login);
+app.post('/register', userController.register);
+app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public','dashboard.html'));
+});
+
+
 // Start server
 app.listen(port, async() => {
     try{
