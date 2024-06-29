@@ -5,13 +5,11 @@ const postController = require("./controllers/postController")
 const sql = require("mssql");
 const dbConfig = require("./dbConfig");
 const path = require('path');
-const cors = require('cors'); // Allow cross-origin requests if needed
 
 const app = express();
 const port = 3000;
 
 // Middleware
-app.use(cors()); // Enable CORS
 app.use(bodyParser.json());
 app.use(express.static('public')); // serve static files (HTML, CSS, JS)
 
