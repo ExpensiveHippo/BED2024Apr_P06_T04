@@ -28,20 +28,31 @@ class User{
         : null;
     } 
     static async createUser(newUserData){
-        const connection = await sql.connect(dbConfig);
-        const sqlQuery = `INSERT INTO Users (username, email, password) VALUES(@username,@email,@password); SELECT SCOPE_IDENTITY() as id`
+        try{
+            const connection = await sql.connect(dbConfig);
+            const sqlQuery = `INSERT INTO Users (username, email, password) VALUES(@username,@email,@password); SELECT SCOPE_IDENTITY() as id`
 
-        const request = connection.request();
-        request.input('username',sql.VarChar,newUserData.username);
-        request.input('email',sql.VarChar,newUserData.email);
-        request.input('password',sql.VarChar,newUserData.password);
+            const request = connection.request();
+            request.input('username',sql.VarChar,newUserData.username);
+            request.input('email',sql.VarChar,newUserData.email);
+            request.input('password',sql.VarChar,newUserData.password);
 
-        const result = await request.query(sqlQuery);
-        if (result.recordset.length === 0){
-            throw new Error("Failed to create User");
+            const result = await request.query(sqlQuery);
+            connection.close();
+            if (result.recordset.length === 0){
+                throw new Error("Failed to create User");
+            }
+            return this.getUserByUsername(newUserData.username);
         }
-        connection.close();
-        return this.getUserByUsername(newUserData.username);
+        catch(error){
+            if(error.number === 2627 || error.number === 2601){
+                throw new Error("Username already exists");
+            }
+            else{
+                console.error(error);
+                throw error;
+            }
+        }
     }
 }
 module.exports = User;
