@@ -19,7 +19,7 @@ class Like {
             request.input("contentId", newLike.contentId);
             const result = await request.query(sqlQuery);
             connection.close();
-            return this.getLike(newLike);
+            return this.getLike(newLike.userId, newLike.contentType, newLike.contentId);
         } 
         catch (error) {
             console.error(error);
@@ -51,14 +51,11 @@ class Like {
         }
     }
 
-    static async getLike(thisLike) {
+    static async getLike(userId, contentType, contentId) {
         const connection = await SQL.connect(DBCONFIG);
         try {
-            const sqlQuery = `SELECT * FROM Likes WHERE userId = @userId AND contentType = @contentType AND contentId = @contentId`
+            const sqlQuery = `SELECT * FROM Likes WHERE userId = ${userId} AND contentType = ${contentType} AND contentId = ${contentId}`;
             const request = connection.request();
-            request.input("userId", thisLike.userId);
-            request.input("contentType", thisLike.contentType)
-            request.input("contentId", thisLike.contentId);
             const result = await request.query(sqlQuery); 
             return result.recordset[0] ? new Like(
                 result.recordset[0].userId,

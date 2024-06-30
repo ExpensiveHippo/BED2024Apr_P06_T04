@@ -32,10 +32,12 @@ const deleteLike = async (req, res) => {
 }
 
 const getLike = async (req, res) => {
-    const thisLike = req.body;
+    const userId = req.params.userId;
+    const contentType = req.params.contentType;
+    const contentId = req.params.contentId;
 
     try {
-        const like = await Like.getLike(thisLike);
+        const like = await Like.getLike(userId, contentType, contentId);
         res.json(like);
     }
     catch (error) {
