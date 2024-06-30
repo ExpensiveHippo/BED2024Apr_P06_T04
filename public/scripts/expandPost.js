@@ -15,10 +15,7 @@ async function fetchPostDetail() {
         if (!response.ok) {
             throw new Error(`Failed to fetch post: ${response.status} ${response.statusText}`);
         }
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-            throw new Error('Expected JSON response from server');
-        }
+
         const post = await response.json();
 
         const postDetailContainer = document.getElementById('postDetailContainer');
@@ -45,6 +42,20 @@ async function fetchPostDetail() {
         const iconComment = postDetailContainer.querySelector('.fa-comment');
         const iconKebab = postDetailContainer.querySelector('fa-ellipsis-v');
 
+        // get arguements for Like
+        const userId = localStorage.getItem('id');
+        const contentType = "Posts";
+        const contentId = postId;
+
+        fetch(`/like/${userId}/${contentType}/${contentId}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data != null) {
+                iconLike.classList.toggle('clicked');
+            }
+        })
+        .catch(error => console.log("Error: " + error))  
+
         iconLike.addEventListener('click', async () => {
 
             // default to add like
@@ -57,10 +68,6 @@ async function fetchPostDetail() {
                 endpoint = '/unlike';
             }
 
-            // get arguements for Like
-            const userId = localStorage.getItem('id');
-            const contentType = "Posts";
-            const contentId = postId;
             const requestBody = {
                 userId: userId,
                 contentType: contentType,
