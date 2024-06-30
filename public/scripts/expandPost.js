@@ -32,17 +32,50 @@ async function fetchPostDetail() {
             <h2>${post.post.title}</h2>
             <p>${post.post.content}</p>
             <div class="post-icons">
-                <button class="fas fa-heart" onclick="this.style.color = (this.style.color === 'black' ? '' : 'black')"></button>
+                <button class="fas fa-heart"></button>
                 <button class="fas fa-comment"></button>
                 <button class="fa fa-ellipsis-v" aria-hidden="true"></button>
             </div>
         `;
-        const icons = postElement.querySelectorAll('.post-icons i');
-        icons.forEach(icon => {
-            icon.addEventListener('click', () => {
-                icon.classList.toggle('clicked');
+
+        // !------------------------------------------------NEED TO CHECK IF USER HAS LIKED POST BEFORE
+        
+        // get icons
+        const iconLike = postDetailContainer.querySelector('.fa-heart');
+        const iconComment = postDetailContainer.querySelector('.fa-comment');
+        const iconKebab = postDetailContainer.querySelector('fa-ellipsis-v');
+
+        iconLike.addEventListener('click', async () => {
+
+            // default to add like
+            var method = 'POST';
+            var endpoint = '/like';
+
+            // if user has already liked, change method and endpoint to del like
+            if (iconLike.classList.contains('clicked')) {
+                method = 'DELETE';
+                endpoint = '/unlike';
+            }
+
+            // get arguements for Like
+            const userId = localStorage.getItem('id');
+            const contentType = "Posts";
+            const contentId = postId;
+
+            // send request
+            const response = await fetch(endpoint, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userId, contentType, contentId })
             });
-        });
+            
+            // if changes are recorded in db, then change appearance of like icon
+            if (response.ok) {
+                iconLike.classList.toggle('clicked');
+            } 
+        })
         }  catch (error) {
         console.error('Error fetching post details:', error);
     }
