@@ -6,7 +6,7 @@ const login = async(req,res) =>{
         const user = await User.getUserByUsername(username);
         if (user){
             if (password === user.password){
-                res.json({ success:true });
+                res.json({ success:true, id:user.id });
             }
             else{
                 res.json({ success: false});
