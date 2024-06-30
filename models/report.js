@@ -1,4 +1,4 @@
-const SQL = require(mssql);
+const SQL = require("mssql");
 const DBCONFIG = require("../dbConfig");
 
 class Report {
@@ -13,22 +13,20 @@ class Report {
 
     // called when a user reports a content (article/comment)
     static async createReport(newReport) {
+        const connection = await SQL.connect(DBCONFIG);
         try {
-            const connection = await SQL.connect(DBCONFIG);
-
             const sqlQuery = `INSERT INTO 
             Reports (contentType, contentId, industry, reason, reportDateTime) 
             VALUES (@contentType, @contentId, @industry, @reason, @reportDateTime); 
             SELECT SCOPE_IDENTITY() as reportId`;
-
             const request = connection.request();
             request.input("contentType", newReport.contentType);
             request.input("contentId", newReport.contentId);
             request.input("industry", newReport.industry);
             request.input("reason", newReport.reason);
             request.input("reportDateTime", newReport.reportDateTime);
-
             const result = await request.query(sqlQuery);
+            connection.close();
 
             // check if report was added to db
             return this.getReportById(result.recordset[0].reportId);
@@ -37,47 +35,49 @@ class Report {
             console.error(error);
         }
         finally {
-            connection.close();
+            if (connection) {
+                connection.close();
+            }
         } 
     }
 
     // called when an admin selects "Remove"
     static async deleteReportsByContentId(contentId) {
+        const connection = await SQL.connect(DBCONFIG);
         try {
-            const connection = await SQL.connect(DBCONFIG);
             const sqlQuery = `DELETE FROM Reports WHERE contentId = ${contentId}`;
             const result = await connection.request().query(sqlQuery);
-            connection.close();
             return result.rowsAffected > 0;
         } 
         catch (error) {
-            connection.close();
             console.error(error);
+        }
+        finally {
+            connection.close();
         }
     }
 
     // called when an admin selects "Keep"
     static async deleteReportById(reportId) {
+        const connection = await SQL.connect(DBCONFIG);
         try {
-            const connection = await SQL.connect(DBCONFIG);
             const sqlQuery = `DELETE FROM Reports WHERE reportId = ${reportId}`;
             const result = await connection.request().query(sqlQuery);
-            connection.close();
             return result.rowsAffected > 0;
         } 
         catch (error) {
-            connection.close();
             console.error(error);
+        }
+        finally {
+            connection.close();
         }
     }
 
     static async getReportById(reportId) {
+        const connection = await SQL.connect(DBCONFIG);
         try {
-            const connection = await SQL.connect(DBCONFIG);
             const sqlQuery = `SELECT * FROM Reports WHERE reportId = ${reportId}`
             const result = await connection.request().query(sqlQuery); 
-            connection.close();
-
             return result.recordset[0] ? new Report(
                 result.recordset[0].reportId, 
                 result.recordset[0].contentType, 
@@ -88,8 +88,10 @@ class Report {
             ) : null;
         }
         catch (error) {
-            connection.close();
             console.error(error);
+        }
+        finally {
+            connection.close();
         }
     }
 } 
