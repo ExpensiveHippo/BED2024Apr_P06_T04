@@ -61,14 +61,19 @@ async function fetchPostDetail() {
             const userId = localStorage.getItem('id');
             const contentType = "Posts";
             const contentId = postId;
-
+            const requestBody = {
+                userId: userId,
+                contentType: contentType,
+                contentId: contentId
+            }
+            console.log(requestBody);
             // send request
             const response = await fetch(endpoint, {
                 method: method,
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ userId, contentType, contentId })
+                body: JSON.stringify(requestBody)
             });
             
             // if changes are recorded in db, then change appearance of like icon

@@ -20,6 +20,7 @@ app.use(express.static('public')); // serve static files (HTML, CSS, JS)
 // Endpoints
 app.get("/Posts",postController.getAllPosts)
 app.get("/Posts/:postId",postController.getPostById)
+app.get("/like/:userId/:contentType/:contentId", likeController.getLike);
 
 app.post("/createPost", postController.createPost);
 app.post('/login', userController.login);

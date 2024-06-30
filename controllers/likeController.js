@@ -32,9 +32,9 @@ const deleteLike = async (req, res) => {
 }
 
 const getLike = async (req, res) => {
-    const userId = req.params.userId;
+    const userId = parseInt(req.params.userId);
     const contentType = req.params.contentType;
-    const contentId = req.params.contentId;
+    const contentId = parseInt(req.params.contentId);
 
     try {
         const like = await Like.getLike(userId, contentType, contentId);

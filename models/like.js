@@ -54,8 +54,11 @@ class Like {
     static async getLike(userId, contentType, contentId) {
         const connection = await SQL.connect(DBCONFIG);
         try {
-            const sqlQuery = `SELECT * FROM Likes WHERE userId = ${userId} AND contentType = ${contentType} AND contentId = ${contentId}`;
+            const sqlQuery = `SELECT * FROM Likes WHERE userId = @userId AND contentType = @contentType AND contentId = @contentId`;
             const request = connection.request();
+            request.input('userId', userId);
+            request.input('contentType', contentType);
+            request.input('contentId', contentId);
             const result = await request.query(sqlQuery); 
             return result.recordset[0] ? new Like(
                 result.recordset[0].userId,
