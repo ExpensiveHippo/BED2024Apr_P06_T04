@@ -5,6 +5,7 @@ drop table if exists Reports, Likes, Comments, Posts, Users;
 /*----------------------------------------------------------------------------------*/
 
 
+
 /*-------------------------------CREATE TABLES----------------------------------*/
 
 create table Users(
@@ -19,23 +20,23 @@ create table Users(
 );
 
 create table Posts(
-	id int identity(1,1),
+	postId int identity(1,1),
 	username varchar(100) not null,
 	title varchar(255) not null,
 	content text,
 	
-	constraint PK_Posts primary key (id),
+	constraint PK_Posts primary key (postId),
 	constraint FK_Posts foreign key (username) references Users(username)
 );
 
 create table Comments(
-	id int identity(172,1),
+	commentId int identity(172,1),
 	userId int not null,
 	contentType varchar(8) not null,
 	contentId int not null,
 	content text not null,
 
-	constraint PK_Comments primary key (id),
+	constraint PK_Comments primary key (commentId),
 	constraint FK_Comments foreign key (userId) references Users(id),
 	constraint CK_Comments check (contentType in ('Comments', 'Posts'))
 );
@@ -63,7 +64,6 @@ create table Reports(
 );
 
 /*------------------------------------------------------------------------------------------------*/
-
 
 /*----------------------------------INSERT VALUES---------------------------------------*/
 
