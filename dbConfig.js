@@ -1,5 +1,5 @@
 module.exports = {
-    user:"testuser",
+    user:"testuser123",
     password:"test123",
     server:"localhost",
     database:"testDB",
