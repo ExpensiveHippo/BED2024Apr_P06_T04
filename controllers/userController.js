@@ -34,8 +34,13 @@ const register = async(req,res) =>{
         }
     }
     catch (error){
-        console.error("Error during registration:", error);
-        res.status(500).json({ success: false, message: "Server error during registration" });
+        if (error.message === "Username already exists"){
+            res.status(400).json({ success:false, message: "This username already exists" });
+        }
+        else{
+            console.error("Error during registration:", error);
+            res.status(500).json({ success: false, message: "Server error during registration" });
+        }
     }
 }
 module.exports = {

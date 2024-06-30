@@ -21,11 +21,21 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
         if (data.success){
             alert('Registration Successful!');
             localStorage.setItem("username",data.user.username);
-            window.location.href = '/dashboard';
+            window.location.href = '/post.html';
         }
         else{
             document.getElementById("message").textContent = data.message;
+            setTimeout(() =>{
+                document.getElementById('message').textContent = '';
+            },5000);
         }
+    })
+    .catch(error =>{
+        console.error("Error:", error);
+        document.getElementById("message").textContent = 'An error occured during the registration.'
+        setTimeout(() =>{
+            document.getElementById('message').textContent = '';
+        },5000);
     })
 
 });
