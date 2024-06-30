@@ -88,7 +88,8 @@ async function fetchPostDetail() {
                 iconLike.classList.toggle('clicked');
             } 
         })
-        }  catch (error) {
+    }   
+    catch (error) {
         console.error('Error fetching post details:', error);
     }
 }
