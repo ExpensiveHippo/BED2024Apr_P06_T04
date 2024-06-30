@@ -31,11 +31,25 @@ const deleteLike = async (req, res) => {
     }
 }
 
-const getLikesForPost = async (req, res) => {
-    const postId = parseInt(req.params.id);
+const getLike = async (req, res) => {
+    const thisLike = req.body;
 
     try {
-        const likes = await Like.getLikesForPost(postId);
+        const like = await Like.getLike(thisLike);
+        res.json(like);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send("Error retrieving like");
+    }
+}
+
+const getLikesForContent = async (req, res) => {
+    const contentType = req.params.type;
+    const contentId = parseInt(req.params.id);
+
+    try {
+        const likes = await Like.getLikesForContent(contentType, contentId);
         res.json(likes);
     }
     catch (error) {
@@ -60,6 +74,7 @@ const getLikesOfUser = async (req, res) => {
 module.exports = {
     createLike,
     deleteLike,
-    getLikesForPost,
+    getLike,
+    getLikesForContent,
     getLikesOfUser
 };
