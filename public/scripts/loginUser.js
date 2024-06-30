@@ -16,7 +16,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
             alert("You are now logged in!")
             localStorage.setItem("username",username);
             localStorage.setItem("id", data.id);
-            window.location.href = '/dashboard'; //enter next page if password is correct
+            window.location.href = '/post.html'; //enter next page if password is correct
         } else {
             document.getElementById('message').textContent = 'Invalid username or password';
             setTimeout(() =>{
