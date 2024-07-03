@@ -1,8 +1,8 @@
 module.exports = {
-    user:"testuser123",
-    password:"test123",
+    user:"sa",
+    password:"1234567890",
     server:"localhost",
-    database:"testDB",
+    database:"bed_db_asg",
     trustServerCertificate:true,
     options:{
         port:1433,

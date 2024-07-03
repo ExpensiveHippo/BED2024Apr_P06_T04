@@ -7,6 +7,7 @@ const path = require('path');
 const userController = require("./controllers/userController");
 const postController = require("./controllers/postController");
 const likeController = require("./controllers/likeController");
+const commentController = require("./controllers/commentController");
 
 const app = express();
 const port = 3000;
@@ -21,11 +22,14 @@ app.use(express.static('public')); // serve static files (HTML, CSS, JS)
 app.get("/Posts",postController.getAllPosts)
 app.get("/Posts/:postId",postController.getPostById)
 app.get("/like/:userId/:contentType/:contentId", likeController.getLike);
+app.get("/Comments",commentController.getAllComments)
+app.get("/Comments/:userId",commentController.getCommentsByUser)
 
 app.post("/createPost", postController.createPost);
 app.post('/login', userController.login);
 app.post('/register', userController.register);
 app.post('/like', likeController.createLike);
+app.post('/createComment', commentController.createComment);
 
 app.delete('/unlike', likeController.deleteLike);
 
