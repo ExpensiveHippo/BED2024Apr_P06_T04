@@ -7,6 +7,9 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
 
     if (password !== confirmPassword){
         document.getElementById('message').textContent = 'Passwords do not match';
+        setTimeout(() =>{
+            document.getElementById('message').textContent = '';
+        },5000);
         return;
     }
     fetch('/register', {

@@ -30,32 +30,21 @@ class User{
         : null;
     } 
     static async createUser(newUserData){
-        try{
-            const connection = await sql.connect(dbConfig);
-            const sqlQuery = `INSERT INTO Users (username, email, password, role) VALUES(@username,@email,@password,@role); SELECT SCOPE_IDENTITY() as id`
+        const connection = await sql.connect(dbConfig);
+        const sqlQuery = `INSERT INTO Users (username, email, password, role) VALUES(@username,@email,@password,@role); SELECT SCOPE_IDENTITY() as id`
 
-            const request = connection.request();
-            request.input('username',sql.VarChar,newUserData.username);
-            request.input('email',sql.VarChar,newUserData.email);
-            request.input('password',sql.VarChar,newUserData.password);
-            request.input('role',sql.VarChar,newUserData.role || 'user');
+        const request = connection.request();
+        request.input('username',sql.VarChar,newUserData.username);
+        request.input('email',sql.VarChar,newUserData.email);
+        request.input('password',sql.VarChar,newUserData.password);
+        request.input('role',sql.VarChar,newUserData.role || 'user');
 
-            const result = await request.query(sqlQuery);
-            connection.close();
-            if (result.recordset.length === 0){
-                throw new Error("Failed to create User");
-            }
-            return this.getUserByUsername(newUserData.username);
+        const result = await request.query(sqlQuery);
+        connection.close();
+        if (result.recordset.length === 0){
+            throw new Error("Failed to create User");
         }
-        catch(error){
-            if(error.number === 2627 || error.number === 2601){
-                throw new Error("Username already exists");
-            }
-            else{
-                console.error(error);
-                throw error;
-            }
-        }
+        return this.getUserByUsername(newUserData.username);
     }
 }
 module.exports = User;

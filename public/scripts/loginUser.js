@@ -14,7 +14,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     .then(data => {
         if (data.success) {
             alert("You are now logged in!")
-            localStorage.setItem("username",username);
+            localStorage.setItem("username",data.username);
             localStorage.setItem("id", data.id);
             window.location.href = '/post.html'; //enter next page if password is correct
         } else {
