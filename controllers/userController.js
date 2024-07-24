@@ -1,20 +1,18 @@
 const User = require("../models/user");
+const bcrypt = require('bcrypt');
 
 const login = async(req,res) =>{
     const { username, password } = req.body;
     try{
         const user = await User.getUserByUsername(username);
         if (user){
-            if (password === user.password){
-                res.json({ success:true });
+            if (!await bcrypt.compare(password, user.password)){
+                return res.status(401).json({message: "Invalid Credentials" , success : false});
             }
-            else{
-                res.json({ success: false});
-            }
+            return res.json({success: true, user});
         }
         else{
-            res.json({ sucess: false});
-            console.log("Invalid");
+            return res.status(401).json({message: "Invalid Credentials" , success : false});
         }
     }
     catch(err){
@@ -23,15 +21,21 @@ const login = async(req,res) =>{
     }
 };
 const register = async(req,res) =>{
-    const newUserData = req.body;
+    const { username, email, password, role} = req.body;
     try{
-        const newUser = await User.createUser(newUserData);
-        if (newUser) {
-            res.status(201).json({ success: true, message: "User registered successfully", user: newUser });
+        const existingUser = await User.getUserByUsername(username);
+        if (existingUser) {
+            return res.status(400).json({message: "Username already exists! Please try again!"})
         } 
-        else {
-            res.status(500).json({ success: false, message: "Failed to register user" });
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        const newUserData = { username, email, password : hashedPassword, role};
+
+        const newUser =  await User.createUser(newUserData);
+        if (!newUser){
+            return res.status(500).json({message: "Failed to register User", success: false});
         }
+        res.status(201).json({success: true, user: newUser});
     }
     catch (error){
         console.error("Error during registration:", error);

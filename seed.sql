@@ -5,6 +5,7 @@ drop table if exists Reports, Likes, Comments, Posts, Users;
 /*----------------------------------------------------------------------------------*/
 
 
+
 /*-------------------------------CREATE TABLES----------------------------------*/
 
 create table Users(
@@ -19,23 +20,33 @@ create table Users(
 );
 
 create table Posts(
-	id int identity(1,1),
+	postId int identity(1,1),
 	username varchar(100) not null,
 	title varchar(255) not null,
 	content text,
 	
-	constraint PK_Posts primary key (id),
+	constraint PK_Posts primary key (postId),
 	constraint FK_Posts foreign key (username) references Users(username)
 );
 
+create table Likes(
+	userId int not null,
+	contentType varchar(8) not null,
+	contentId int not null,
+
+	constraint PK_Likes primary key (userId, contentType, contentId),
+	constraint FK_Likes foreign key (userId) references Users(id),
+	constraint CK_Likes check (contentType in ('Comments', 'Posts')) 
+);
+
 create table Comments(
-	id int identity(172,1),
+	commentId int identity(172,1),
 	userId int not null,
 	contentType varchar(8) not null,
 	contentId int not null,
 	content text not null,
 
-	constraint PK_Comments primary key (id),
+	constraint PK_Comments primary key (commentId),
 	constraint FK_Comments foreign key (userId) references Users(id),
 	constraint CK_Comments check (contentType in ('Comments', 'Posts'))
 );
@@ -64,7 +75,6 @@ create table Reports(
 
 /*------------------------------------------------------------------------------------------------*/
 
-
 /*----------------------------------INSERT VALUES---------------------------------------*/
 
 insert into Users(username, email, password, role) 
@@ -83,15 +93,14 @@ values
 	('towerskit', 'A perspective into what education will look like for our children', 'In the future, education is poised to undergo a profound transformation driven by technological innovation and evolving societal needs. Classrooms will become more interactive and personalized, with AI and machine learning tailoring learning experiences to individual students'' strengths and weaknesses. Virtual and augmented reality will bring subjects to life, providing immersive, hands-on learning opportunities that transcend traditional textbooks. The boundaries of education will expand beyond physical classrooms, as online platforms and global collaborations enable students to learn from anywhere in the world. Additionally, the focus will shift towards developing critical thinking, creativity, and adaptability, preparing students for careers that may not yet exist. Lifelong learning will become the norm, with continuous education and skill development essential to thriving in a rapidly changing world.'),
 	('PANDALOSER', 'The future of our health', 'Healthcare in the future will be revolutionized by advancements in technology and personalized medicine, leading to more efficient, effective, and patient-centered care. Artificial intelligence and machine learning will play a pivotal role in diagnosing diseases, predicting health risks, and tailoring treatments to individual genetic profiles. Telemedicine will become ubiquitous, providing remote access to healthcare services and specialists, making medical care more accessible and convenient for patients everywhere. Wearable devices and health monitoring apps will enable continuous tracking of vital signs and health metrics, allowing for proactive management of chronic conditions and early intervention. Furthermore, breakthroughs in biotechnology and regenerative medicine will offer new treatments and potential cures for previously incurable diseases, fundamentally transforming the landscape of healthcare and significantly enhancing the quality and longevity of human life.');
 
+
 insert into Comments(userId, contentType, contentId, content) 
 values 
-	(1, 'Posts', 2, 'Nice post'),
-	(2, 'Posts', 3, 'Bad post'),
-	(4, 'Posts', 4, 'Cool post'),
-	(4, 'Posts', 5, 'Not cool post'),
-	(5, 'Posts', 1, 'Meh post'),
-	(4, 'Comments', 1, 'Mean comment'),
-	(2, 'Comments', 3, 'Not mean comment');
+    (1, 'Posts', 1, 'honestly for general usage? probably chat gpt'),
+    (2, 'Posts', 2, 'i inspire to articulate like you'),
+    (3, 'Comments', 1, 'too bad claude is taking over'),
+    (4, 'Posts', 3, 'holy yappington'),
+    (5, 'Comments', 2, 'well, you can use chat gpt for free but you only get limited queries for claude if you don''t pay for the subscription');
 
 insert into Likes(userId, contentType, contentId)
 values 

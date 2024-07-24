@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts Page</title>
+    <link rel="stylesheet" href="styles/mhstyles.css">
+</head>
+<body>
+    <header>
+        <nav class = 'nav-bar'>
+            <p class = 'logo'>WEBSITE</p>
+            <input type="text" placeholder="Search for anything...">
+            <a href="#">About</a>
+            <a href="#">Industry</a>
+            <a href="#">Posts</a>
+            <a href="#">User1</a>
+        </nav>
+    </header>
+    <main>
+        <div class ='search-container'>
+            <input type="text" class='post-search' placeholder="Search for a post...">
+            <button onclick="location.href='createPost.html'" class="create-post-button">+</button>
+        </div>
+        <div class="posts" id="postsContainer">
+            <!-- Posts will be dynamically added here -->
+        </div>
+    </main>
+    <script src="./scripts/viewPost.js"></script>
+</body>
+</html>
