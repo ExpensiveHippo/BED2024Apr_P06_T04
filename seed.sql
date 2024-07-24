@@ -31,25 +31,26 @@ create table Posts(
 
 
 create table Comments(
-    commentId int identity(172,1),
-    postId int NOT NULL,
-    userId int not null,
-    comment text not null,
-    liked bit not null,
-    constraint PK_Comments primary key (commentId),
-    constraint FK_Comments_Posts foreign key (postId) references Posts(postId),
-    constraint FK_Comments_Users foreign key (userId) references Users(id)
+	commentId int identity(172,1),
+	userId int not null,
+	contentType varchar(7) not null,
+	contentId int not null,
+	content text not null,
+
+	constraint PK_Comments primary key (commentId),
+	constraint FK_Comments foreign key (userId) references Users(id),
+	constraint CK_Comments check (contentType in ('Comment', 'Post'))
 );
 
 create table Reports(
 	reportId int identity (327132,1),
-	contentType varchar(8) not null,
+	contentType varchar(7) not null,
 	contentId int not null,
 	reason varchar(255) not null,
 	reportDate date not null,
 
 	constraint PK_Reports primary key (reportId),
-	constraint CK_Reports check (contentType in ('Comments', 'Posts'))
+	constraint CK_Reports check (contentType in ('Comment', 'Post'))
 );
 
 /*------------------------------------------------------------------------------------------------*/
@@ -73,22 +74,22 @@ values
 	('PANDALOSER', 'The future of our health', 'Healthcare in the future will be revolutionized by advancements in technology and personalized medicine, leading to more efficient, effective, and patient-centered care. Artificial intelligence and machine learning will play a pivotal role in diagnosing diseases, predicting health risks, and tailoring treatments to individual genetic profiles. Telemedicine will become ubiquitous, providing remote access to healthcare services and specialists, making medical care more accessible and convenient for patients everywhere. Wearable devices and health monitoring apps will enable continuous tracking of vital signs and health metrics, allowing for proactive management of chronic conditions and early intervention. Furthermore, breakthroughs in biotechnology and regenerative medicine will offer new treatments and potential cures for previously incurable diseases, fundamentally transforming the landscape of healthcare and significantly enhancing the quality and longevity of human life.');
 
 
-insert into Comments(postId, userId, comment, liked) 
+insert into Comments(userId, contentType, contentId, content) 
 values 
-    (1, 2, 'Nice post', false),
-    (2, 3, 'Bad post', true),
-    (3, 4, 'Cool post', true),
-    (4, 5, 'Not cool post', false),
-    (5, 1, 'Meh post', false);
+    (1, 'Post', 1, 'honestly for general usage? probably chat gpt'),
+    (2, 'Post', 2, 'i inspire to articulate like you'),
+    (3, 'Comment', 1, 'too bad claude is taking over'),
+    (4, 'Post', 3, 'holy yappington'),
+    (5, 'Comment', 2, 'well, you can use chat gpt for free but you only get limited queries for claude if you don''t pay for the subscription');
 
 insert into Likes(userId, contentType, contentId)
 values 
-	(1, 'Posts', 1),
-	(2, 'Posts', 2),
-	(4, 'Posts', 2),
-	(5, 'Posts', 4),
-	(1, 'Comments', 1),
-	(5, 'Comments', 1);
+	(1, 'Post', 1),
+	(2, 'Post', 2),
+	(4, 'Post', 2),
+	(5, 'Post', 4),
+	(1, 'Comment', 1),
+	(5, 'Comment', 1);
 
 insert into Reports(contentType, contentId, reason, reportDate)
 values
