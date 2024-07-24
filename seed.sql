@@ -33,24 +33,35 @@ create table Posts(
 create table Comments(
 	commentId int identity(172,1),
 	userId int not null,
-	contentType varchar(7) not null,
+	contentType varchar(8) not null,
 	contentId int not null,
 	content text not null,
 
 	constraint PK_Comments primary key (commentId),
 	constraint FK_Comments foreign key (userId) references Users(id),
-	constraint CK_Comments check (contentType in ('Comment', 'Post'))
+	constraint CK_Comments check (contentType in ('Comments', 'Posts'))
+);
+
+create table Likes(
+	likeId int identity(12378,1),
+	userId int not null,
+	contentType varchar(8) not null,
+	contentId int not null,
+
+	constraint PK_Likes primary key (likeId),
+	constraint FK_Likes foreign key (userId) references Users(id),
+	constraint CK_Likes check (contentType in ('Comments', 'Posts')) 
 );
 
 create table Reports(
 	reportId int identity (327132,1),
-	contentType varchar(7) not null,
+	contentType varchar(8) not null,
 	contentId int not null,
 	reason varchar(255) not null,
 	reportDate date not null,
 
 	constraint PK_Reports primary key (reportId),
-	constraint CK_Reports check (contentType in ('Comment', 'Post'))
+	constraint CK_Reports check (contentType in ('Comments', 'Posts'))
 );
 
 /*------------------------------------------------------------------------------------------------*/
@@ -76,20 +87,20 @@ values
 
 insert into Comments(userId, contentType, contentId, content) 
 values 
-    (1, 'Post', 1, 'honestly for general usage? probably chat gpt'),
-    (2, 'Post', 2, 'i inspire to articulate like you'),
-    (3, 'Comment', 1, 'too bad claude is taking over'),
-    (4, 'Post', 3, 'holy yappington'),
-    (5, 'Comment', 2, 'well, you can use chat gpt for free but you only get limited queries for claude if you don''t pay for the subscription');
+    (1, 'Posts', 1, 'honestly for general usage? probably chat gpt'),
+    (2, 'Posts', 2, 'i inspire to articulate like you'),
+    (3, 'Comments', 1, 'too bad claude is taking over'),
+    (4, 'Posts', 3, 'holy yappington'),
+    (5, 'Comments', 2, 'well, you can use chat gpt for free but you only get limited queries for claude if you don''t pay for the subscription');
 
 insert into Likes(userId, contentType, contentId)
 values 
-	(1, 'Post', 1),
-	(2, 'Post', 2),
-	(4, 'Post', 2),
-	(5, 'Post', 4),
-	(1, 'Comment', 1),
-	(5, 'Comment', 1);
+	(1, 'Posts', 1),
+	(2, 'Posts', 2),
+	(4, 'Posts', 2),
+	(5, 'Posts', 4),
+	(1, 'Comments', 1),
+	(5, 'Comments', 1);
 
 insert into Reports(contentType, contentId, reason, reportDate)
 values
