@@ -1,29 +1,37 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const userController = require("./controllers/userController");
-const postController = require("./controllers/postController")
 const sql = require("mssql");
 const dbConfig = require("./dbConfig");
 const path = require('path');
+
+const userController = require("./controllers/userController");
+const postController = require("./controllers/postController");
+const likeController = require("./controllers/likeController");
+const commentController = require("./controllers/commentController");
 
 const app = express();
 const port = 3000;
 
 // Middleware
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public')); // serve static files (HTML, CSS, JS)
 
 
-//Endpoint
-
+// Endpoints
 app.get("/Posts",postController.getAllPosts)
 app.get("/Posts/:postId",postController.getPostById)
+app.get("/like/:userId/:contentType/:contentId", likeController.getLike);
+app.get("/Comments",commentController.getAllComments)
+app.get("/Comments/:userId",commentController.getCommentsByUser)
+
 app.post("/createPost", postController.createPost);
 app.post('/login', userController.login);
 app.post('/register', userController.register);
-app.get('/dashboard', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public','dashboard.html'));
-});
+app.post('/like', likeController.createLike);
+app.post('/createComment', commentController.createComment);
+
+app.delete('/unlike', likeController.deleteLike);
 
 
 // Start server

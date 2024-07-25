@@ -1,87 +1,87 @@
-const SQL = require("../mssql");
+const SQL = require("mssql");
 const DBCONFIG = require("../dbConfig");
 
 class Like {
-    constructor(likeId, userId, contentType, contentId) {
-        this.likeId = likeId;
+    constructor(userId, contentType, contentId) {
         this.userId = userId;
         this.contentType = contentType;
         this.contentId = contentId;
     }
 
-    // Create a like when user likes a post
+    // Create a like when user likes a post/comment
     static async createLike(newLike) {
+        const connection = await SQL.connect(DBCONFIG);
         try {
-            const connection = await SQL.connect(DBCONFIG);
-            const sqlQuery = `INSERT INTO Likes (userId, postId) VALUES (@userId, @postId);`;
-
+            const sqlQuery = `INSERT INTO Likes (userId, contentType, contentId) VALUES (@userId, @contentType, @contentId);`;
             const request = connection.request();
             request.input("userId", newLike.userId);
-            request.input("postId", newLike.postId);
-
+            request.input("contentType", newLike.contentType);
+            request.input("contentId", newLike.contentId);
             const result = await request.query(sqlQuery);
-            return this.getLikeById(result.recordset[0].id);
+            connection.close();
+            return this.getLike(newLike.userId, newLike.contentType, newLike.contentId);
         } 
         catch (error) {
             console.error(error);
         }
         finally {
-            connection.close();
+            if (connection) {
+                connection.close();
+            }
         } 
     }
 
-    // Delete like when user unlikes a post
+    // Delete like when user unlikes a post/comment
     static async deleteLike(thisLike) {
+        const connection = await SQL.connect(DBCONFIG);
         try {
-            const connection = await SQL.connect(DBCONFIG);
-
-            const sqlQuery = `DELETE FROM Likes WHERE userId = @userId AND postId = @postId`;
-
+            const sqlQuery = `DELETE FROM Likes WHERE userId = @userId AND contentType = @contentType AND contentId = @contentId`;
             const request = connection.request();
             request.input("userId", thisLike.userId);
-            request.input("postId", thisLike.postId);
-
+            request.input("contentType", thisLike.contentType)
+            request.input("contentId", thisLike.contentId);
             const result = await request.query(sqlQuery);
-
-            connection.close();
             return result.rowsAffected > 0;
         } 
         catch (error) {
-            connection.close();
             console.error(error);
         } 
+        finally {
+            connection.close();
+        }
     }
 
-    static async getLikeById(likeId) {
+    static async getLike(userId, contentType, contentId) {
+        const connection = await SQL.connect(DBCONFIG);
         try {
-            const connection = await SQL.connect(DBCONFIG);
-            const sqlQuery = `SELECT * FROM Likes WHERE likeId = ${likeId}`
-            const result = await connection.request().query(sqlQuery); 
-            connection.close();
-
-            return result.recordset[0] ? new Report(
-                result.recordset[0].likeId,
+            const sqlQuery = `SELECT * FROM Likes WHERE userId = @userId AND contentType = @contentType AND contentId = @contentId`;
+            const request = connection.request();
+            request.input('userId', userId);
+            request.input('contentType', contentType);
+            request.input('contentId', contentId);
+            const result = await request.query(sqlQuery); 
+            return result.recordset[0] ? new Like(
                 result.recordset[0].userId,
                 result.recordset[0].contentType,
                 result.recordset[0].contentId
             ) : null;
         }
         catch (error) {
-            connection.close();
             console.error(error);
+        }
+        finally {
+            connection.close();
         }
     }
 
-    // Retrieve all the likes a content(post/comment) has
+    // Retrieve all the likes a post/comment has
     static async getLikesForContent(contentType, contentId) {
+        const connection = await SQL.connect(DBCONFIG);
         try {
-            const connection = await SQL.connect(DBCONFIG);
             const sqlQuery = `SELECT * FROM Likes WHERE contentType = ${contentType} AND contentId = ${contentId}`;      
             const result = await connection.request().query(sqlQuery);
-            connection.close();
             return result.recordset[0] ? result.recordset.map(row => {
                 new Like(
-                    row.likeId,
                     row.userId,
                     row.contentType,
                     row.contentId
@@ -89,23 +89,21 @@ class Like {
             }) : null;
         } 
         catch (error) {
-            connection.close();
             console.error(error)
+        }
+        finally {
+            connection.close();
         }
     }
 
     // Retrieve all the likes a user has
     static async getLikesOfUser(userId) {
+        const connection = await SQL.connect(DBCONFIG);
         try {
-            const sqlQuery = `SELECT * FROM Likes WHERE userId = ${userId}`;
-            
-            const connection = await SQL.connect(DBCONFIG);
+            const sqlQuery = `SELECT * FROM Likes WHERE userId = ${userId}`; 
             const result = await connection.request().query(sqlQuery);
-    
-            connection.close();
             return result.recordset[0] ? result.recordset.map(row => {
                 new Like(
-                    row.likeId,
                     row.userId,
                     row.contentType,
                     row.contentId
@@ -113,8 +111,10 @@ class Like {
             }) : null;
         } 
         catch (error) {
-            connection.close();
             console.error(error)
+        }
+        finally {
+            connection.close();
         }
     }
 }
