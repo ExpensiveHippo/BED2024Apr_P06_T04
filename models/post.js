@@ -36,12 +36,13 @@ class Post{
     } 
     static async createPost(newPostData){
         const connection = await sql.connect(dbConfig);
-        const sqlQuery = `INSERT INTO Posts (username,title,content) VALUES(@username,@title,@content); SELECT SCOPE_IDENTITY() AS postId;`
+        const sqlQuery = `INSERT INTO Posts (username,title,content,industry) VALUES(@username,@title,@content,@industry); SELECT SCOPE_IDENTITY() AS postId;`
 
         const request = connection.request();
         request.input('username',sql.VarChar,newPostData.username);
         request.input('title',sql.VarChar,newPostData.title);
         request.input('content',sql.VarChar,newPostData.content)
+        request.input('industry',sql.VarChar,newPostData.industry)
 
         const result = await request.query(sqlQuery);
         if (result.recordset.length === 0){
@@ -52,13 +53,14 @@ class Post{
     }
     static async updatePost(newUpdateData){
         const connection = await sql.connect(dbConfig);
-        const sqlQuery = 'UPDATE Posts SET title = @title, content = @content WHERE username = @username AND postId = @postId;'
+        const sqlQuery = 'UPDATE Posts SET title = @title, content = @content, industry = @industry WHERE username = @username AND postId = @postId;'
 
         const request = connection.request();
         request.input('title',sql.VarChar,newUpdateData.title);
         request.input('content',sql.VarChar,newUpdateData.content)
         request.input('username',sql.VarChar,newUpdateData.username);
         request.input('postId',sql.Int,newUpdateData.postId);
+        request.input('industry',sql.VarChar,newUpdateData.industry)
 
         const result = await request.query(sqlQuery);
         if (result.recordset.length === 0){
@@ -66,6 +68,20 @@ class Post{
         }
         connection.close();
         return this.getPostById(newUpdateData.postId)
+    }
+    static async deletePost(username, postId){
+        const connection = await sql.connect(dbConfig);
+        const sqlQuery = 'DELETE Posts WHERE postId = @postId AND username = @username'
+
+        const request = connection.request();
+        request.input('username',sql.VarChar,username)
+        request.input('postId',sql.Int,postId)
+
+        const result = await request.query(sqlQuery);
+        if (result.rowsAffected === 0){
+            throw new Error("Error deleting Post")
+        }
+        return result.rowsAffected > 0;
     }
 }
 module.exports = Post;
