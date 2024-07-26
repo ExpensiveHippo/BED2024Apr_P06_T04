@@ -24,7 +24,7 @@ create table Posts(
 	username varchar(100) not null,
 	title varchar(255) not null,
 	content text not null,
-	industry varchar(50) null,
+	industry varchar(50) not null,
 	
 	constraint PK_Posts primary key (postId),
 	constraint FK_Posts foreign key (username) references Users(username),
