@@ -4,10 +4,6 @@ const sql = require("mssql");
 const dbConfig = require("./dbConfig");
 
 
-const userController = require("./controllers/userController");
-const postController = require("./controllers/postController");
-const likeController = require("./controllers/likeController");
-const commentController = require("./controllers/commentController");
 const authenticateToken = require('./middleware/authUser');
 
 const userController = require("./controllers/userController");
