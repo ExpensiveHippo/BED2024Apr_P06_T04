@@ -16,9 +16,6 @@ class Like {
             const sqlQuery = `INSERT INTO Likes (userId, contentType, contentId) VALUES (@userId, @contentType, @contentId);
             SELECT SCOPE_IDENTITY() AS likeId;`;
             const request = connection.request();
-            console.log(user.id);
-            console.log(body.contentType);
-            console.log(body.contentId);
             request.input("userId", user.id);
             request.input("contentType", body.contentType);
             request.input("contentId", body.contentId);

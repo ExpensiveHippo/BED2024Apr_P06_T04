@@ -54,6 +54,7 @@ app.listen(port, async() => {
 
     console.log(`Server running at http://localhost:${port}`);
 });
+
 process.on("SIGINT", async() =>{
     console.log("Server closing gracefully");
     await sql.close();
