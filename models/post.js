@@ -50,5 +50,22 @@ class Post{
         connection.close();
         return this.getPostById(newPostData.postId);
     }
+    static async updatePost(newUpdateData){
+        const connection = await sql.connect(dbConfig);
+        const sqlQuery = 'UPDATE Posts SET title = @title, content = @content WHERE username = @username AND postId = @postId;'
+
+        const request = connection.request();
+        request.input('title',sql.VarChar,newUpdateData.title);
+        request.input('content',sql.VarChar,newUpdateData.content)
+        request.input('username',sql.VarChar,newUpdateData.username);
+        request.input('postId',sql.Int,newUpdateData.postId);
+
+        const result = await request.query(sqlQuery);
+        if (result.recordset.length === 0){
+            throw new Error("Failed to create Post");
+        }
+        connection.close();
+        return this.getPostById(newUpdateData.postId)
+    }
 }
 module.exports = Post;
