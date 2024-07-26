@@ -8,7 +8,7 @@ const userController = require("./controllers/userController");
 const postController = require("./controllers/postController");
 const likeController = require("./controllers/likeController");
 const commentController = require("./controllers/commentController");
-
+const authenticateToken = require('./middleware/authUser');
 const app = express();
 const port = 3000;
 
@@ -25,16 +25,16 @@ app.get("/like/:userId/:contentType/:contentId", likeController.getLike);
 app.get("/Comments",commentController.getAllComments)
 app.get("/Comments/:userId",commentController.getCommentsByUser)
 
-app.post("/createPost", postController.createPost);
+app.post("/createPost",authenticateToken, postController.createPost);
 app.post('/login', userController.login);
 app.post('/register', userController.register);
 app.post('/like', likeController.createLike);
 app.post('/createComment', commentController.createComment);
 
-app.update("/updatePost", postController.updatePost)
+app.put("/updatePost", postController.updatePost)
 
 app.delete('/unlike', likeController.deleteLike);
-app.delete('deletePost',postController.deletePosts)
+app.delete('/deletePost',postController.deletePost)
 
 
 // Start server

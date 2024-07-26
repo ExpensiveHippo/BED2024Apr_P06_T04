@@ -25,10 +25,11 @@ const getPostById = async (req, res) => {
     }
 };
 const createPost = async (req, res) => {
-    const { username, title, content } = req.body;
+    const username = req.user.username;
+    const { industry, title, content } = req.body;
 
     try {
-        const newPost = await Post.createPost({ username, title, content, industry });
+        const newPost = await Post.createPost({ industry, username, title, content });
         res.status(201).json({ success: true, message: "Post created successfully", post: newPost });
     } catch (error) {
         console.error("Error creating post:", error);
@@ -36,21 +37,21 @@ const createPost = async (req, res) => {
     }
 };
 const updatePost = async (req, res) => {
-    const { title, content, username, postId} = req.body;
+    const { postId, industry, username, title, content} = req.body;
 
     try {
-        const newUpdate = await Post.updatePost({title, content, username, postId, industry});
+        const newUpdate = await Post.updatePost({postId, industry, username, title, content});
         res.status(201).json({ success: true, message: "Post updated successfully", post: newUpdate });
     } catch (error) {
         console.error("Error updating post:", error);
         res.status(500).json({ success: false, message: "Server error updating post" });
     }
 };
-const deletePosts = async (req, res) => {
-    const {username, postId} = req.body;
+const deletePost = async (req, res) => {
+    const {postId, username} = req.body;
 
     try{
-        const newDelete = await Post.deletePosts({username, postId});
+        const newDelete = await Post.deletePosts({ postId, username});
         res.status(201).json({ success: true, message: "Post deleted successfully", post: newDelete });
     } catch (error) {
         console.error("Error deleting post:", error);
@@ -62,5 +63,5 @@ module.exports = {
     createPost,
     getPostById,
     updatePost,
-    deletePosts
+    deletePost,
 };

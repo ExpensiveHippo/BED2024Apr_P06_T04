@@ -36,13 +36,13 @@ class Post{
     } 
     static async createPost(newPostData){
         const connection = await sql.connect(dbConfig);
-        const sqlQuery = `INSERT INTO Posts (username,title,content,industry) VALUES(@username,@title,@content,@industry); SELECT SCOPE_IDENTITY() AS postId;`
+        const sqlQuery = `INSERT INTO Posts (username,industry,title,content) VALUES(@username,@industry,@title,@content); SELECT SCOPE_IDENTITY() AS postId;`
 
         const request = connection.request();
         request.input('username',sql.VarChar,newPostData.username);
+        request.input('industry',sql.VarChar,newPostData.industry)
         request.input('title',sql.VarChar,newPostData.title);
         request.input('content',sql.VarChar,newPostData.content)
-        request.input('industry',sql.VarChar,newPostData.industry)
 
         const result = await request.query(sqlQuery);
         if (result.recordset.length === 0){
@@ -56,11 +56,11 @@ class Post{
         const sqlQuery = 'UPDATE Posts SET title = @title, content = @content, industry = @industry WHERE username = @username AND postId = @postId;'
 
         const request = connection.request();
+        request.input('postId',sql.Int,newUpdateData.postId);
+        request.input('username',sql.VarChar,newUpdateData.username);
+        request.input('industry',sql.VarChar,newUpdateData.industry)
         request.input('title',sql.VarChar,newUpdateData.title);
         request.input('content',sql.VarChar,newUpdateData.content)
-        request.input('username',sql.VarChar,newUpdateData.username);
-        request.input('postId',sql.Int,newUpdateData.postId);
-        request.input('industry',sql.VarChar,newUpdateData.industry)
 
         const result = await request.query(sqlQuery);
         if (result.recordset.length === 0){
@@ -74,8 +74,8 @@ class Post{
         const sqlQuery = 'DELETE Posts WHERE postId = @postId AND username = @username'
 
         const request = connection.request();
-        request.input('username',sql.VarChar,username)
         request.input('postId',sql.Int,postId)
+        request.input('username',sql.VarChar,username)
 
         const result = await request.query(sqlQuery);
         if (result.rowsAffected === 0){

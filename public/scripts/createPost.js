@@ -4,17 +4,19 @@ document.addEventListener('DOMContentLoaded', () => {
     createPostForm.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        const username = document.getElementById('username').value;
+        const accessToken = localStorage.getItem("userToken");
         const title = document.getElementById('title').value;
         const content = document.getElementById('content').value;
+        const industry = document.getElementById('industry').value;
 
         try {
             const response = await fetch("/createPost", {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
                 },
-                body: JSON.stringify({ username, title, content })
+                body: JSON.stringify({title, content, industry })
             });
 
             const result = await response.json();

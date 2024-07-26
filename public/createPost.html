@@ -20,9 +20,14 @@
     <main>
         <div class="create-post-container">
             <form id="createPostForm">
-                <input type="text" id="username" name="username" placeholder="Username" required>
                 <input type="text" id="title" name="title" placeholder="Title" required>
                 <textarea id="content" name="content" placeholder="Content" required></textarea>
+                <label for="industry">Choose an Industry:</label>
+                <select id="industry" name="industry">
+                    <option value="Education">Education</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Agriculture">Agriculture</option>
+                </select>
                 <button type="submit">Create Post</button>
             </form>
         </div>
