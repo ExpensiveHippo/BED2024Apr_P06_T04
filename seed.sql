@@ -14,11 +14,8 @@ create table Users(
 	email varchar(100) not null,
 	password varchar(100) not null,
 	role varchar(16) not null,
-<<<<<<< HEAD
 	bio varchar(255) not null,
 	link varchar(100) not null,
-=======
->>>>>>> 26e925d5927d7e524e2ae0a620990069dd6ff808
 
 	constraint PK_Users primary key (id),
 	constraint CK_Users check (role in ('admin', 'user'))
@@ -84,11 +81,11 @@ create table Reports(
 
 insert into Users(username, email, password, role) 
 values
-	('Mooncringle', 'mooncringle123@gmail.com', 'mooncringle123', 'user'),
-	('agedRank', 'agedrank023@gmail.com', 'agedrank123', 'user'),
-	('Benjamin', 'benjamin13278@gmail.com', 'benjamin123', 'admin'),
-	('towerskit', 'towerskit@gmail.com', 'towerskit123', 'user'),
-	('PANDALOSER', 'pandaloser123@gmail.com', 'PANDALOSER123', 'user');
+	('Mooncringle', 'mooncringle123@gmail.com', '$2b$10$D2On5TBBtPEU0fewxHjWcunq5dhzXK8aJfXlK6eJ05h5eXPtNt6iu', 'user'),
+	('agedRank', 'agedrank023@gmail.com', '$2b$10$jgrtabM321l9WHImeV7.S.2UdO9ek6bdUhsrx3Ye9T06V7ZQsTj5S', 'user'),
+	('Benjamin', 'benjamin13278@gmail.com', '$2b$10$A1o0txwKyWANX1nPOCMaMOtSePRpdbdUPHf9xZEqnsGFqqAGH09sm', 'admin'),
+	('towerskit', 'towerskit@gmail.com', '$2b$10$XgUaHjeYK0shFAEQtO/lqOLjxOAKcZGZR//AdxeUU9Hl1xCxQl0fO', 'user'),
+	('PANDALOSER', 'pandaloser123@gmail.com', '$2b$10$1cNMBYIC6rHFARr6pyvqWeVkmqnTGFZi7syvD9kpoPOfee6Da8yL2', 'user');
 
 insert into Posts(username, title, content)
 values 
