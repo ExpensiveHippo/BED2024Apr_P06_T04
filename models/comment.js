@@ -2,32 +2,91 @@ const sql = require("mssql");
 const dbConfig = require("../dbConfig");
 
 class Comments {
-    constructor(commentId, postId, userId, comment, liked) {
+    constructor(commentId, userId, contentType, contentId, content, username) {
         this.commentId = commentId;
-        this.postId = postId;
         this.userId = userId;
-        this.comment = comment;
-        this.liked = liked;
+        this.contentType = contentType;
+        this.contentId = contentId;
+        this.content = content;
+        this.username= username;
     }
 
     static async getAllComments() {
         const connection = await sql.connect(dbConfig);
-        const sqlQuery = `SELECT * FROM Comments`;
+        const sqlQuery = `SELECT c.commentId, c.content,u.username FROM Comments c INNER JOIN Users u ON c.userId = u.id;`;
         const request = connection.request();
         const result = await request.query(sqlQuery);
         connection.close();
-        return result.recordset.map(row => new Comments(row.commentId, row.postId, row.userId, row.comment, row.liked));
+        return result.recordset.map(row => ({
+            commentId: row.commentId,
+            content: row.content,
+            username: row.username
+        }));
     }
 
     static async getCommentsByUser(userId) {
         const connection = await sql.connect(dbConfig);
-        const sqlQuery = `SELECT * FROM Comments WHERE userId = @userId`;
+        const sqlQuery = `SELECT c.commentId, c.content,u.username FROM Comments c INNER JOIN Users u ON c.userId = u.id WHERE userId = @userId`;
         const request = connection.request();
         request.input('userId', sql.Int, userId);
         const result = await request.query(sqlQuery);
         connection.close();
-        return result.recordset.map(row => new Comments(row.commentId, row.postId, row.userId, row.comment, row.liked));
+        return result.recordset.map(row => ({
+            commentId: row.commentId,
+            content: row.content,
+            username: row.username
+        }));
+    }/*
+    static async updateComment(id) {
+        const connection = await sql.connect(dbConfig);
+
+        const sqlQuery = `UPDATE Books SET title = @title, author = @author WHERE id = @id`; // Parameterized query
+
+        const request = connection.request();
+        request.input("id", id);
+        request.input("title", newBookData.title || null); // Handle optional fields
+        request.input("author", newBookData.author || null);
+
+        await request.query(sqlQuery);
+
+        connection.close();
+
+        return this.getBookById(id); // returning the updated book data
     }
+    static async deleteComment(id) {
+        try {
+            const connection = await sql.connect(dbConfig);
+            const sqlQuery = `DELETE FROM Comments WHERE commentId = @id`;
+            const request = connection.request();
+            request.input("id", id);
+            const result = await request.query(sqlQuery);
+            connection.close();
+            console.log(`Result of delete query: ${result.rowsAffected}`);
+            return result.rowsAffected > 0; // Indicate success based on affected rows
+        } catch (error) {
+            console.error("Error in deleteComment model:", error);
+            throw error;
+        }
+    }*/
+    static async deleteComment(id) {
+        try {
+            console.log(`Deleting comment with ID: ${id}`);
+            const connection = await sql.connect(dbConfig);
+            const sqlQuery = `DELETE FROM Comments WHERE commentId = @id`;
+            const request = connection.request();
+            request.input("id", id);
+            const result = await request.query(sqlQuery);
+            connection.close();
+            console.log(`Rows affected: ${result.rowsAffected}`);
+            if (result.rowsAffected > 0) {
+            return "Comment deleted successfully";}
+        } catch (error) {
+            console.error("Error in deleteComment model:", error);
+            throw error;
+        }
+    }
+
+  
 
     static async createComment(postId, userId, comment, liked = false) {
         const connection = await sql.connect(dbConfig);

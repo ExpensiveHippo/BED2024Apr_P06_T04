@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public')); // serve static files (HTML, CSS, JS)
 
 
-// Endpoints
+// Endpoints/Routes
 app.get("/Posts",postController.getAllPosts)
 app.get("/Posts/:postId",postController.getPostById)
 app.get("/like/:userId/:contentType/:contentId", likeController.getLike);
@@ -31,6 +31,9 @@ app.post('/register', userController.register);
 app.post('/like', likeController.createLike);
 app.post('/createComment', commentController.createComment);
 
+app.put("/updateComments/:id", commentController.updateComment); 
+
+app.delete("/deleteComments/:id", commentController.deleteComment);
 app.delete('/unlike', likeController.deleteLike);
 
 
