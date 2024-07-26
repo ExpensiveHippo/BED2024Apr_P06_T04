@@ -34,11 +34,11 @@ app.post('/login', userController.login);
 app.post('/register', userController.register);
 app.post('/like', authenticateToken, likeController.createLike);
 app.post('/createComment', commentController.createComment);
-app.post('/createReport', reportController.createReport);
+app.post('/createReport', authenticateToken, reportController.createReport);
 
 app.delete('/unlike', authenticateToken, likeController.deleteLike);
-app.delete('/deleteReport/:reportId', reportController.deleteReportById);
-app.delete('/deleteReports/:contentType/:contentId', reportController.deleteReportsByContentId);
+app.delete('/deleteReport/:reportId', authenticateToken, reportController.deleteReportById);
+app.delete('/deleteReports/:contentType/:contentId', authenticateToken, reportController.deleteReportsByContentId);
 
 
 // Start server

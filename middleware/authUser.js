@@ -18,7 +18,10 @@ const authenticateToken = (req,res,next) =>{
             // TODO: endpoints to be placed here for authorization of certain things
             "/like": ["user", "admin"],
             "/like/[A-Za-z]+/[0-9]+": ["user", "admin"],
-            "/unlike": ["user", "admin"]
+            "/unlike": ["user", "admin"],
+            "/createReport": ["user", "admin"],
+            "/deleteReport/[0-9]+": ["admin"],
+            "/deleteReports/[A-Za-z]+/[0-9]+": ["admin"]
         }
         const requestedEndPoint = req.url;
         const userRole = user.role;

@@ -51,23 +51,10 @@ const deleteReportsByContentId = async (req, res) => {
     }
 }
 
-const getReportById = async (req, res) => {
-    const reportId = parseInt(req.params.id);
-
-    try {
-        const report = Report.getReportById(reportId);
-        res.json(report);
-    } 
-    catch (error) {
-        console.error(error);
-        res.status(500).send("Error retrieving report");
-    }
-}
 
 module.exports = {
     createReport,
     deleteReportById,
-    deleteReportsByContentId,
-    getReportById
+    deleteReportsByContentId
 }
 

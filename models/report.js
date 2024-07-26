@@ -12,7 +12,7 @@ class Report {
     }
 
     // called when a user reports a content (article/comment)
-    static async createReport(newReport) {
+    static async createReport(body) {
         const connection = await SQL.connect(DBCONFIG);
         try {
             const sqlQuery = `INSERT INTO 
@@ -20,10 +20,10 @@ class Report {
             VALUES (@industry, @contentType, @contentId, @reason, CONVERT(date, GETDATE())); 
             SELECT SCOPE_IDENTITY() as reportId`;
             const request = connection.request();
-            request.input("industry", newReport.industry);
-            request.input("contentType", newReport.contentType);
-            request.input("contentId", newReport.contentId);
-            request.input("reason", newReport.reason);
+            request.input("industry", body.industry);
+            request.input("contentType", body.contentType);
+            request.input("contentId", body.contentId);
+            request.input("reason", body.reason);
             const result = await request.query(sqlQuery);
             connection.close();
 
@@ -65,8 +65,10 @@ class Report {
     static async deleteReportById(reportId) {
         const connection = await SQL.connect(DBCONFIG);
         try {
-            const sqlQuery = `DELETE FROM Reports WHERE reportId = ${reportId}`;
-            const result = await connection.request().query(sqlQuery);
+            const sqlQuery = `DELETE FROM Reports WHERE reportId = @reportId`;
+            const request = connection.request();
+            request.input('reportId', reportId);
+            const result = await request.query(sqlQuery);
             return result.rowsAffected > 0;
         } 
         catch (error) {
@@ -81,8 +83,10 @@ class Report {
     static async getReportById(reportId) {
         const connection = await SQL.connect(DBCONFIG);
         try {
-            const sqlQuery = `SELECT * FROM Reports WHERE reportId = ${reportId}`
-            const result = await connection.request().query(sqlQuery); 
+            const sqlQuery = `SELECT * FROM Reports WHERE reportId = @reportId`;
+            const request = connection.request();
+            request.input('reportId', reportId);
+            const result = await request.query(sqlQuery); 
             return result.recordset[0] ? new Report(
                 result.recordset[0].reportId, 
                 result.recordset[0].contentType, 
