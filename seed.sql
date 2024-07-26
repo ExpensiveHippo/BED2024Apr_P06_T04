@@ -64,11 +64,12 @@ create table Likes(
 
 create table Reports(
 	reportId int identity (327132,1),
+	industry varchar(100) not null,
 	contentType varchar(8) not null,
 	contentId int not null,
 	reason varchar(255) not null,
-	reportDate date not null,
-
+	reportDate date not null default convert(date, getdate()),
+	
 	constraint PK_Reports primary key (reportId),
 	constraint CK_Reports check (contentType in ('Comments', 'Posts'))
 );
@@ -111,10 +112,10 @@ values
 	(1, 'Comments', 1),
 	(5, 'Comments', 1);
 
-insert into Reports(contentType, contentId, reason, reportDate)
+insert into Reports(industry, contentType, contentId, reason, reportDate)
 values
-	('Posts', 1, 'Harassment', '2024-06-11'),
-	('Posts', 1, 'Inciting Hate', '2024-06-12'),
-	('Comments', 6, 'Harassment', '2024-06-15');
+	('Education','Posts', 1, 'Harassment', '2024-06-11'),
+	('Medical', 'Posts', 1, 'Inciting Hate', '2024-06-12'),
+	('Business', 6, 'Harassment', '2024-06-15');
 
 /*----------------------------------------------------------------------------------*/

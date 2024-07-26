@@ -23,6 +23,7 @@ class Like {
         } 
         catch (error) {
             console.error(error);
+            throw(error);
         }
         finally {
             if (connection) {
@@ -45,6 +46,7 @@ class Like {
         } 
         catch (error) {
             console.error(error);
+            throw error;
         } 
         finally {
             connection.close();
@@ -68,6 +70,7 @@ class Like {
         }
         catch (error) {
             console.error(error);
+            throw error;
         }
         finally {
             connection.close();
@@ -89,7 +92,8 @@ class Like {
             }) : null;
         } 
         catch (error) {
-            console.error(error)
+            console.error(error);
+            throw error;
         }
         finally {
             connection.close();
@@ -111,7 +115,8 @@ class Like {
             }) : null;
         } 
         catch (error) {
-            console.error(error)
+            console.error(error);
+            throw error;
         }
         finally {
             connection.close();

@@ -16,15 +16,14 @@ class Report {
         const connection = await SQL.connect(DBCONFIG);
         try {
             const sqlQuery = `INSERT INTO 
-            Reports (contentType, contentId, industry, reason, reportDateTime) 
-            VALUES (@contentType, @contentId, @industry, @reason, @reportDateTime); 
+            Reports (industry, contentType, contentId,  reason, reportDate) 
+            VALUES (@industry, @contentType, @contentId, @reason, CONVERT(date, GETDATE())); 
             SELECT SCOPE_IDENTITY() as reportId`;
             const request = connection.request();
+            request.input("industry", newReport.industry);
             request.input("contentType", newReport.contentType);
             request.input("contentId", newReport.contentId);
-            request.input("industry", newReport.industry);
             request.input("reason", newReport.reason);
-            request.input("reportDateTime", newReport.reportDateTime);
             const result = await request.query(sqlQuery);
             connection.close();
 
@@ -33,6 +32,7 @@ class Report {
         } 
         catch (error) {
             console.error(error);
+            throw error;
         }
         finally {
             if (connection) {
@@ -42,15 +42,19 @@ class Report {
     }
 
     // called when an admin selects "Remove"
-    static async deleteReportsByContentId(contentId) {
+    static async deleteReportsByContentId(contentType, contentId) {
         const connection = await SQL.connect(DBCONFIG);
         try {
-            const sqlQuery = `DELETE FROM Reports WHERE contentId = ${contentId}`;
-            const result = await connection.request().query(sqlQuery);
+            const sqlQuery = `DELETE FROM Reports WHERE contentType = @contentType AND contentId = @contentId`;
+            const request = connection.request();
+            request.input("contentType",  contentType);
+            request.input("contentId", contentId);
+            const result = await request.query(sqlQuery);
             return result.rowsAffected > 0;
         } 
         catch (error) {
             console.error(error);
+            throw error;
         }
         finally {
             connection.close();
@@ -67,6 +71,7 @@ class Report {
         } 
         catch (error) {
             console.error(error);
+            throw error;
         }
         finally {
             connection.close();
@@ -89,6 +94,7 @@ class Report {
         }
         catch (error) {
             console.error(error);
+            throw error;
         }
         finally {
             connection.close();
