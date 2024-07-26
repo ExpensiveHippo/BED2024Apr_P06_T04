@@ -3,7 +3,13 @@ const bodyParser = require('body-parser');
 const userController = require("./controllers/userController");
 const sql = require("mssql");
 const dbConfig = require("./dbConfig");
-const path = require('path');
+
+
+const userController = require("./controllers/userController");
+const postController = require("./controllers/postController");
+const likeController = require("./controllers/likeController");
+const commentController = require("./controllers/commentController");
+const authenticateToken = require('./middleware/authUser');
 
 const app = express();
 const port = 3000;
@@ -13,7 +19,16 @@ app.use(bodyParser.json());
 app.use(express.static('public')); // serve static files (HTML, CSS, JS)
 
 
-//Endpoint
+
+// Endpoints
+app.get("/Posts",postController.getAllPosts)
+app.get("/Posts/:postId",postController.getPostById)
+app.get("/like/:userId/:contentType/:contentId", likeController.getLike);
+app.get("/Comments",commentController.getAllComments)
+app.get("/Comments/:userId",commentController.getCommentsByUser)
+app.get("/Profile",authenticateToken,userController.getProfile);
+
+app.post("/createPost", postController.createPost);
 app.post('/login', userController.login);
 app.post('/register', userController.register);
 app.get('/dashboard', (req, res) => {
