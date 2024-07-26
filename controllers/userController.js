@@ -16,6 +16,7 @@ const login = async(req,res) =>{
         }
 
         const userInfo = {
+            id: user.id,
             username: user.username,
             role: user.role,
         }

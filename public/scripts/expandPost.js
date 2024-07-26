@@ -34,8 +34,6 @@ async function fetchPostDetail() {
                 <button class="fa fa-ellipsis-v" aria-hidden="true"></button>
             </div>
         `;
-
-        // !------------------------------------------------NEED TO CHECK IF USER HAS LIKED POST BEFORE
         
         // get icons
         const iconLike = postDetailContainer.querySelector('.fa-heart');
@@ -43,11 +41,15 @@ async function fetchPostDetail() {
         const iconKebab = postDetailContainer.querySelector('fa-ellipsis-v');
 
         // get arguements for Like
-        const userId = localStorage.getItem('id');
+        const token = localStorage.getItem('userToken');
         const contentType = "Posts";
         const contentId = postId;
 
-        fetch(`/like/${userId}/${contentType}/${contentId}`)
+        fetch(`/like/${contentType}/${contentId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}` 
+            }
+        })
         .then(res => res.json())
         .then(data => {
             if (data != null) {
@@ -69,16 +71,16 @@ async function fetchPostDetail() {
             }
 
             const requestBody = {
-                userId: userId,
                 contentType: contentType,
                 contentId: contentId
             }
-            console.log(requestBody);
+            
             // send request
             const response = await fetch(endpoint, {
                 method: method,
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` 
                 },
                 body: JSON.stringify(requestBody)
             });

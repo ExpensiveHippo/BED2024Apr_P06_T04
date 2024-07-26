@@ -9,14 +9,19 @@ const authenticateToken = (req,res,next) =>{
     if (!token){
         return res.status(401).json({message:"Unauthorized"});
     }
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err,user) =>{
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) =>{
         if (err) {
             console.error(err);
             return res.status(403).json({message: "Forbidden"});
         }
         const authorizedRoles = {
             // TODO: endpoints to be placed here for authorization of certain things
+            "/like": ["user", "admin"],
+            "/like/[A-Za-z]+/[0-9]+": ["user", "admin"],
+            "/unlike": ["user", "admin"]
         }
+        const requestedEndPoint = req.url;
+        const userRole = user.role;
         const authorizedRole = Object.entries(authorizedRoles).find(
             ([endpoint, roles]) => {
               const regex = new RegExp(`^${endpoint}$`);
@@ -25,9 +30,9 @@ const authenticateToken = (req,res,next) =>{
         )
       
         if (!authorizedRole) {
-        return res.status(403).json({ message: "Forbidden" });
+            return res.status(403).json({ message: "Forbidden" });
         }
-    
+
         req.user = user;
         next();
     });

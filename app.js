@@ -9,6 +9,7 @@ const postController = require("./controllers/postController");
 const likeController = require("./controllers/likeController");
 const commentController = require("./controllers/commentController");
 const reportController = require("./controllers/reportController");
+const authenticateToken = require("./middleware/authUser");
 const { report } = require('process');
 
 const app = express();
@@ -21,20 +22,21 @@ app.use(express.static('public')); // serve static files (HTML, CSS, JS)
 
 
 // Endpoints
-app.get("/Posts",postController.getAllPosts)
-app.get("/Posts/:postId",postController.getPostById)
-app.get("/like/:userId/:contentType/:contentId", likeController.getLike);
-app.get("/Comments",commentController.getAllComments)
-app.get("/Comments/:userId",commentController.getCommentsByUser)
+app.get("/Posts",postController.getAllPosts);
+app.get("/Posts/:postId",postController.getPostById);
+app.get("/Comments",commentController.getAllComments);
+app.get("/Comments/:userId",commentController.getCommentsByUser);
+app.get("/like/:contentType/:contentId", authenticateToken, likeController.getLike);
+
 
 app.post("/createPost", postController.createPost);
 app.post('/login', userController.login);
 app.post('/register', userController.register);
-app.post('/like', likeController.createLike);
+app.post('/like', authenticateToken, likeController.createLike);
 app.post('/createComment', commentController.createComment);
 app.post('/createReport', reportController.createReport);
 
-app.delete('/unlike', likeController.deleteLike);
+app.delete('/unlike', authenticateToken, likeController.deleteLike);
 app.delete('/deleteReport/:reportId', reportController.deleteReportById);
 app.delete('/deleteReports/:contentType/:contentId', reportController.deleteReportsByContentId);
 
