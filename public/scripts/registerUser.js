@@ -23,7 +23,8 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
     .then(data => {
         if (data.success){
             alert('Registration Successful!');
-            localStorage.setItem("username",data.user.username);
+            console.log(data);
+            localStorage.setItem("userToken",data.accessToken);
             window.location.href = '/post.html';
         }
         else{
