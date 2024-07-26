@@ -77,7 +77,7 @@ values
 	('towerskit', 'towerskit@gmail.com', '$2b$10$XgUaHjeYK0shFAEQtO/lqOLjxOAKcZGZR//AdxeUU9Hl1xCxQl0fO', 'user'),
 	('PANDALOSER', 'pandaloser123@gmail.com', '$2b$10$1cNMBYIC6rHFARr6pyvqWeVkmqnTGFZi7syvD9kpoPOfee6Da8yL2', 'user');
 
-insert into Posts(username, title, content)
+insert into Posts(username, industry, title, content)
 values 
 	('Mooncringle','education', 'What is the best GenAI in the market now?', 'So many good ones out in the market, but which one stands above all?'),
 	('Mooncringle', 'education', 'Technology is Advancing Too Quickly', 'In the fast-paced business world, keeping up with technological advancements presents a significant challenge for many organizations. Rapidly evolving technologies require continuous learning and adaptation, often straining resources and budgets. Businesses must invest in ongoing training and development for their employees to stay competitive, yet this can be difficult to manage alongside day-to-day operations. Furthermore, integrating new technologies often entails updating or replacing existing systems, which can be costly and time-consuming. The pressure to stay ahead of competitors drives the need for constant innovation, but balancing this with maintaining productivity and service quality remains a persistent struggle. Realistically, should businesses just stick to what worked in the past rather than trying to innovate?'),
