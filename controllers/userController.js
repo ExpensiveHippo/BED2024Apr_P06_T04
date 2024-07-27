@@ -11,9 +11,7 @@ const getProfile = async (req,res) =>{
         if (!profileUser){
             return res.status(404).json({message: "User not found", success: false });
         }
-        res.json({success: true, user: {username: profileUser.username,
-                                        email: profileUser.email,
-                                        role: profileUser.role}});
+        res.json({success: true, user: {username: profileUser.username, email: profileUser.email, bio: profileUser.bio, link: profileUser.link, role: profileUser.role}});
     }
     catch (err) {
         console.error('Error fetching user profile:', err);
