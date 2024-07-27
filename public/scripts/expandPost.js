@@ -1,6 +1,31 @@
-    document.addEventListener('DOMContentLoaded', fetchPostDetail);
-
-    async function fetchPostDetail() {
+    document.addEventListener('DOMContentLoaded', fetchUser);
+    async function fetchUser(){
+        const token = localStorage.getItem("userToken");
+        if (token){ 
+            await fetch('/getUser', { 
+                method: 'GET', 
+                headers:{ 
+                    'Authorization': `Bearer ${token}` 
+                } 
+            }) 
+            .then(response =>{ 
+                if (!response.ok){ 
+                    //handles expired tokens 
+                    if (response.status === 403 || response.status === 401) { 
+                        // Token is expired or invalid 
+                        return; 
+                    } 
+                } 
+                return response.json() 
+            }) 
+            .then(data =>{
+                if (data.success){
+                    signedInUser  = data.user.username
+                    fetchPostDetail(signedInUser)
+                }
+            })
+    }}
+    async function fetchPostDetail(username) {
         // Extract the postId from the query parameters
         const urlParams = new URLSearchParams(window.location.search);
         const accessToken = localStorage.getItem("userToken");
@@ -23,6 +48,7 @@
             }
 
             const post = await response.json();
+            console.log(post);
 
             const postDetailContainer = document.getElementById('postDetailContainer');
             if (!postDetailContainer) {
@@ -30,7 +56,7 @@
                 return;
             }
 
-            const username = 
+            console.log(username)
 
             postDetailContainer.innerHTML = `
                 <h5>Posted By: ${post.post.username}</h5>

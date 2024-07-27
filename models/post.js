@@ -10,7 +10,7 @@ class Post{
     }
     static async getPostById(postId){
         const connection = await sql.connect(dbConfig);
-        const sqlQuery = `SELECT * from Posts where postId = @postId`;
+        const sqlQuery = `SELECT p.postId,  u.username, p.title, p.content from Posts p inner join Users u on p.Id = u.Id where postId = @postId`;
         const request =  connection.request();
         request.input('postId',sql.Int,postId);
         const result =  await request.query(sqlQuery);
