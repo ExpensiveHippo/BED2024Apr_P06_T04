@@ -14,8 +14,8 @@ create table Users(
 	email varchar(100) not null,
 	password varchar(100) not null,
 	role varchar(16) not null,
-	bio varchar(255) not null,
-	link varchar(100) not null,
+	bio varchar(255) null,
+	link varchar(100) null,
 
 	constraint PK_Users primary key (id),
 	constraint CK_Users check (role in ('admin', 'user'))
@@ -29,8 +29,8 @@ create table Posts(
 	content text null,
 	
 	constraint PK_Posts primary key (postId),
-	constraint FK_Posts foreign key (id) references Users(id),
-	constraint CHK_Industry CHECK (industry IN ('healthcare', 'education', 'agriculture'))
+	constraint FK_Posts foreign key (id) references Users(id) ON DELETE CASCADE,
+	constraint CHK_Industry CHECK (industry IN ('healthcare', 'education', 'agriculture')) 
 );
 
 create table Comments(
@@ -41,7 +41,7 @@ create table Comments(
 	content text not null,
 
 	constraint PK_Comments primary key (commentId),
-	constraint FK_Comments foreign key (userId) references Users(id),
+	constraint FK_Comments foreign key (userId) references Users(id) ON DELETE CASCADE,
 	constraint CK_Comments check (contentType in ('Comments', 'Posts'))
 );
 
@@ -52,7 +52,7 @@ create table Likes(
 	contentId int not null,
 
 	constraint PK_Likes primary key (likeId),
-	constraint FK_Likes foreign key (userId) references Users(id),
+	constraint FK_Likes foreign key (userId) references Users(id) ON DELETE CASCADE,
 	constraint CK_Likes check (contentType in ('Comments', 'Posts')) 
 );
 
@@ -71,13 +71,13 @@ create table Reports(
 
 /*----------------------------------INSERT VALUES---------------------------------------*/
 
-insert into Users(username, email, password, role) 
+insert into Users(username, email, password, role, bio, link) 
 values
-	('Mooncringle', 'mooncringle123@gmail.com', '$2b$10$D2On5TBBtPEU0fewxHjWcunq5dhzXK8aJfXlK6eJ05h5eXPtNt6iu', 'user'),
-	('agedRank', 'agedrank023@gmail.com', '$2b$10$jgrtabM321l9WHImeV7.S.2UdO9ek6bdUhsrx3Ye9T06V7ZQsTj5S', 'user'),
-	('Benjamin', 'benjamin13278@gmail.com', '$2b$10$A1o0txwKyWANX1nPOCMaMOtSePRpdbdUPHf9xZEqnsGFqqAGH09sm', 'admin'),
-	('towerskit', 'towerskit@gmail.com', '$2b$10$XgUaHjeYK0shFAEQtO/lqOLjxOAKcZGZR//AdxeUU9Hl1xCxQl0fO', 'user'),
-	('PANDALOSER', 'pandaloser123@gmail.com', '$2b$10$1cNMBYIC6rHFARr6pyvqWeVkmqnTGFZi7syvD9kpoPOfee6Da8yL2', 'user');
+	('Mooncringle', 'mooncringle123@gmail.com', '$2b$10$D2On5TBBtPEU0fewxHjWcunq5dhzXK8aJfXlK6eJ05h5eXPtNt6iu', 'user', NULL, NULL),
+	('agedRank', 'agedrank023@gmail.com', '$2b$10$jgrtabM321l9WHImeV7.S.2UdO9ek6bdUhsrx3Ye9T06V7ZQsTj5S', 'user', NULL, NULL),
+	('Benjamin', 'benjamin13278@gmail.com', '$2b$10$A1o0txwKyWANX1nPOCMaMOtSePRpdbdUPHf9xZEqnsGFqqAGH09sm', 'admin', NULL, NULL),
+	('towerskit', 'towerskit@gmail.com', '$2b$10$XgUaHjeYK0shFAEQtO/lqOLjxOAKcZGZR//AdxeUU9Hl1xCxQl0fO', 'user', NULL, NULL),
+	('PANDALOSER', 'pandaloser123@gmail.com', '$2b$10$1cNMBYIC6rHFARr6pyvqWeVkmqnTGFZi7syvD9kpoPOfee6Da8yL2', 'user', NULL, NULL);
 
 insert into Posts(id, industry, title, content)
 values 
