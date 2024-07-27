@@ -51,16 +51,17 @@ class User{
     }
     static async updateUser(username, newUserData){
         const connection = await sql.connect(dbConfig);
-        const sqlQuery = `UPDATE Users SET username =  @username, email = @email, bio = @bio, link = @link WHERE username = ${username}`;
+        const sqlQuery = `UPDATE Users SET username =  @newUsername, email = @newEmail, bio = @newBio, link = @newLink WHERE username = @username`;
         const request = connection.request();
-        request.input("username",newUserData.username);
-        request.input("email",newUserData.email);
-        request.input("bio",newUserData.bio);
-        request.input("link",newUserData.link);
+        request.input("username",username); //looking for signed in user's current username
+        request.input("newUsername",newUserData.username);
+        request.input("newEmail",newUserData.email);
+        request.input("newBio",newUserData.bio);
+        request.input("newLink",newUserData.link);
 
-        await request.query(sqlQuery);
+        const result = await request.query(sqlQuery);
         connection.close();
-        if (result.recordset.length === 0){
+        if (result.rowsAffected[0] === 0){
             throw new Error("Failed to update User");
         }
         return this.getUserByUsername(newUserData.username);

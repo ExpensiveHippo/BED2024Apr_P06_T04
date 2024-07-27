@@ -1,11 +1,11 @@
-document.addEventListener('DOMContentLoaded',fetchProfile);
+document.addEventListener('DOMContentLoaded',checkAuthentication);
 let profileUsername;
+const token = localStorage.getItem("userToken");
 function checkAuthentication() {
-    const token = localStorage.getItem("userToken");
     if (!token) {
         displayLoginMessage();
     } else {
-        fetchProfile(token);
+        fetchProfileDetails(token);
     }
 }
 
@@ -20,9 +20,9 @@ function displayLoginMessage() {
     `;
 }
 
-async function fetchProfile(token){
+async function fetchProfileDetails(token){
     if (token){
-        await fetch('/Profile', {
+        await fetch('/getUser', {
             method: 'GET',
             headers:{
                 'Authorization': `Bearer ${token}`
@@ -34,8 +34,9 @@ async function fetchProfile(token){
                     // Token is expired or invalid
                     displayLoginMessage();
                     return;
-                } else{
-                    throw new Error('Error in network response');
+                }
+                else{
+                    throw new Error("Failed to fetch Profile");
                 }
             }
             return response.json();
@@ -43,10 +44,10 @@ async function fetchProfile(token){
         .then(data =>{
             if (data.success){
                 profileUsername = data.user.username;
-                document.getElementById('edit-profile-name').value = profileUsername
+                document.getElementById('edit-profile-name').value = profileUsername;
                 document.getElementById('edit-profile-email').value = data.user.email;
                 document.getElementById('edit-profile-bio').value = data.user.bio === null ? "No bio" : data.user.bio;
-                document.getElementById('edit-profile-link').value = data.user.link === null ? "No bio": data.user.link;
+                document.getElementById('edit-profile-link').value = data.user.link === null ? "No Link": data.user.link;
             }
         })
     }
@@ -56,5 +57,54 @@ async function fetchProfile(token){
 }
 
 document.getElementById('save-changes').addEventListener('click', function(){
+    const newProfileUsername = document.getElementById('edit-profile-name').value 
+    const newProfileEmail = document.getElementById('edit-profile-email').value
+    const newProfileBio = document.getElementById('edit-profile-bio').value
+    const newProfileLink = document.getElementById('edit-profile-name').value
     
+    
+    if(token){
+        updateProfile(token,newProfileUsername, newProfileEmail, newProfileBio, newProfileLink);
+    }
+    else{
+        console.error('No access token found');
+    }
 })
+
+async function updateProfile(token,newUsername, newEmail, newBio, newLink) {
+    const bio = newBio.trim() === "" ? null : newBio;
+    const link = newLink.trim() === "" ? null : newLink;
+
+    await fetch('/updateProfile', {
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            newUsername: newUsername,
+            newEmail: newEmail,
+            newBio: bio,
+            newLink: link
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to update profile');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            alert('Profile updated successfully');
+            localStorage.setItem("userToken",data.accessToken);
+            window.location.href = "profile.html"
+        } else {
+            alert('Failed to update profile: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error updating profile:', error);
+        alert('Error updating profile');
+    });
+}

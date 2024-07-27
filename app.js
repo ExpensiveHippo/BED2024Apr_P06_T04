@@ -3,9 +3,6 @@ const bodyParser = require('body-parser');
 const sql = require("mssql");
 const dbConfig = require("./dbConfig");
 
-
-const authenticateToken = require('./middleware/authUser');
-
 const userController = require("./controllers/userController");
 const postController = require("./controllers/postController");
 const likeController = require("./controllers/likeController");
@@ -37,7 +34,7 @@ app.post('/like', likeController.createLike);
 app.post('/createComment', commentController.createComment);
 
 app.put("/updatePost/:postId/:username", postController.updatePost)
-
+app.put("/updateProfile", authenticateToken, userController.updateProfile);
 app.delete('/unlike', likeController.deleteLike);
 app.delete('/deletePost/:postId/:username',postController.deletePost)
 

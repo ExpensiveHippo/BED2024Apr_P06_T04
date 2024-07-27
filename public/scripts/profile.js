@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', checkAuthentication); 
-    const token = localStorage.getItem("userToken");
 
     function checkAuthentication() {
         const token = localStorage.getItem("userToken");
+        console.log(token);
         if (!token) {
             displayLoginMessage();
         } else {
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', checkAuthentication);
     }
     async function fetchProfile(token){
         if (token){
-            await fetch('/Profile', {
+            await fetch('/getUser', {
                 method: 'GET',
                 headers:{
                     'Authorization': `Bearer ${token}`
@@ -36,9 +36,9 @@ document.addEventListener('DOMContentLoaded', checkAuthentication);
                         displayLoginMessage();
                         return;
                     }
-                }
-                else{
-                    throw new Error("Network error")
+                    else{
+                        throw new Error("Error getting Profile")
+                    }
                 }
                 return response.json()
             })
@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', checkAuthentication);
                 const profileEmail = document.getElementById('profile-email');
                 const profileLink = document.getElementById('profile-link');
                 const profileBio = document.getElementById('profile-bio');
+
                 if (data.success){
                     profileName.textContent = data.user.username;
                     const userRole = data.user.role;

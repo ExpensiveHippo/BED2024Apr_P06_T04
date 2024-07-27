@@ -17,20 +17,39 @@ const getProfile = async (req,res) =>{
         console.error('Error fetching user profile:', err);
         res.status(500).json({ message: 'Error fetching user profile', success: false });
     }
-const getProfile = async (req,res) =>{ 
-    try{ 
-        const username = req.user.username; 
-        const profileUser = await User.getUserByUsername(username); 
-        if (!profileUser){ 
-            return res.status(404).json({message: "User not found", success: false }); 
-        } 
-        res.json({success: true, user: {username: profileUser.username, email: profileUser.email, bio: profileUser.bio, link: profileUser.link, role: profileUser.role}}); 
-    } 
-    catch (err) { 
-        console.error('Error fetching user profile:', err); 
-        res.status(500).json({ message: 'Error fetching user profile', success: false }); 
-    } 
 }
+const updateProfile = async (req,res) =>{
+    try{
+        const username = req.user.username;
+        const {newUsername, newEmail, newBio, newLink} = req.body;
+
+        if (username !== newUsername){
+            const existingUser = await User.getUserByUsername(newUsername)
+            if(existingUser){
+                return res.status(400).json({message: "Username already exists", success: false});
+            }
+        }
+        const updatedUserData = {
+            username: newUsername,
+            email: newEmail,
+            bio: newBio || null,
+            link: newLink || null
+        };
+        const updatedUser = await User.updateUser(username, updatedUserData);
+        const userInfo = {
+            id: updatedUser.id,
+            username: updatedUser.username,
+            role: updatedUser.role,
+        };
+        const newAuthToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET,{ expiresIn: '1h' });
+        res.json({success:true, accessToken: newAuthToken});
+    }
+    catch(err){
+        console.error(err);
+        res.status(500).json({message: "Error updating User"});
+    }
+}
+
 const login = async(req,res) =>{
     const { username, password } = req.body;
     try{
@@ -43,6 +62,7 @@ const login = async(req,res) =>{
         }
 
         const userInfo = {
+            id: user.id,
             username: user.username,
             role: user.role,
         }
@@ -71,6 +91,7 @@ const register = async(req,res) =>{
         }
         // authToken generation
         userInfo = {
+            id: newUser.id,
             username: newUser.username,
             role: newUser.role,
         }
@@ -87,4 +108,5 @@ module.exports = {
     login,
     register,
     getProfile,
+    updateProfile,
 }
