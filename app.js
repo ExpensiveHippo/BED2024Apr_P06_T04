@@ -20,7 +20,7 @@ app.use(express.static('public')); // serve static files (HTML, CSS, JS)
 
 // Endpoints
 app.get("/Posts",postController.getAllPosts)
-app.get("/Posts/:postId",postController.getPostById)
+app.get("/Posts/:postId/:username",postController.getPostById)
 app.get("/like/:userId/:contentType/:contentId", likeController.getLike);
 app.get("/Comments",commentController.getAllComments)
 app.get("/Comments/:userId",commentController.getCommentsByUser)
@@ -31,10 +31,10 @@ app.post('/register', userController.register);
 app.post('/like', likeController.createLike);
 app.post('/createComment', commentController.createComment);
 
-app.put("/updatePost", postController.updatePost)
+app.put("/updatePost/:postId/:username", postController.updatePost)
 
 app.delete('/unlike', likeController.deleteLike);
-app.delete('/deletePost',postController.deletePost)
+app.delete('/deletePost/:postId/:username',postController.deletePost)
 
 
 // Start server
