@@ -2,7 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const sql = require("mssql");
 const dbConfig = require("./dbConfig");
-const path = require('path');
+
+
+const authenticateToken = require('./middleware/authUser');
 
 const userController = require("./controllers/userController");
 const postController = require("./controllers/postController");
@@ -25,6 +27,8 @@ app.get("/like/:userId/:contentType/:contentId", likeController.getLike);
 app.get("/Comments",commentController.getAllComments)
 app.get("/Comments/:userId",commentController.getCommentsByUser)
 app.get("/getUser",authenticateToken,userController.getProfile);
+
+
 
 app.post("/createPost",authenticateToken, postController.createPost);
 app.post('/login', userController.login);

@@ -15,6 +15,7 @@ const authenticateToken = (req,res,next) =>{
             return res.status(403).json({message: "Forbidden"});
         }
         const authorizedRoles = {
+            "/getUser": ["admin","user"],
             // TODO: endpoints to be placed here for authorization of certain things
             "/createPost": ["admin","user"],
             "/getUser": ["admin","user"],
