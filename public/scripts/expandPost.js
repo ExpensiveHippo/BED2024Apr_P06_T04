@@ -30,7 +30,7 @@
                 return;
             }
 
-            const username = localStorage.getItem('username');
+            const username = 
 
             postDetailContainer.innerHTML = `
                 <h5>Posted By: ${post.post.username}</h5>

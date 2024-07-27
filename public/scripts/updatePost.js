@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
 
         const accessToken = localStorage.getItem("userToken");
-        const username = localStorage.getItem("username");
         const postId = document.getElementById('postId').value;
         const industry = document.getElementById('industry').value;
         const title = document.getElementById('title').value;
