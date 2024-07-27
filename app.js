@@ -19,11 +19,12 @@ app.use(express.static('public')); // serve static files (HTML, CSS, JS)
 
 
 // Endpoints/Routes
-app.get("/Posts",postController.getAllPosts)
-app.get("/Posts/:postId",postController.getPostById)
+app.get("/Posts",postController.getAllPosts);
+app.get("/Posts/:postId",postController.getPostById);
 app.get("/like/:userId/:contentType/:contentId", likeController.getLike);
-app.get("/Comments",commentController.getAllComments)
-app.get("/Comments/:userId",commentController.getCommentsByUser)
+app.get("/Comments",commentController.getAllComments);
+app.get("/Comments/:userId", commentController.getCommentsByUser);
+
 
 app.post("/createPost", postController.createPost);
 app.post('/login', userController.login);
