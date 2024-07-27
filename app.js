@@ -37,6 +37,7 @@ app.put("/updatePost/:postId/:username", postController.updatePost)
 app.put("/updateProfile", authenticateToken, userController.updateProfile);
 app.delete('/unlike', likeController.deleteLike);
 app.delete('/deletePost/:postId/:username',postController.deletePost)
+app.delete('/deleteProfile',authenticateToken,userController.deleteProfile);
 
 
 // Start server

@@ -1,6 +1,29 @@
 document.addEventListener('DOMContentLoaded',checkAuthentication);
 let profileUsername;
 const token = localStorage.getItem("userToken");
+
+
+document.getElementById('save-changes').addEventListener('click', function(){
+    const newProfileUsername = document.getElementById('edit-profile-name').value 
+    const newProfileEmail = document.getElementById('edit-profile-email').value
+    const newProfileBio = document.getElementById('edit-profile-bio').value
+    const newProfileLink = document.getElementById('edit-profile-name').value
+    
+    
+    if(token){
+        updateProfile(token,newProfileUsername, newProfileEmail, newProfileBio, newProfileLink);
+    }
+    else{
+        console.error('No access token found');
+    }
+})
+document.getElementById('delete-profile').addEventListener('click', function(){
+    if (token){
+        deleteProfile(token);
+    }
+})
+
+
 function checkAuthentication() {
     if (!token) {
         displayLoginMessage();
@@ -56,21 +79,6 @@ async function fetchProfileDetails(token){
     }
 }
 
-document.getElementById('save-changes').addEventListener('click', function(){
-    const newProfileUsername = document.getElementById('edit-profile-name').value 
-    const newProfileEmail = document.getElementById('edit-profile-email').value
-    const newProfileBio = document.getElementById('edit-profile-bio').value
-    const newProfileLink = document.getElementById('edit-profile-name').value
-    
-    
-    if(token){
-        updateProfile(token,newProfileUsername, newProfileEmail, newProfileBio, newProfileLink);
-    }
-    else{
-        console.error('No access token found');
-    }
-})
-
 async function updateProfile(token,newUsername, newEmail, newBio, newLink) {
     const bio = newBio.trim() === "" ? null : newBio;
     const link = newLink.trim() === "" ? null : newLink;
@@ -106,5 +114,43 @@ async function updateProfile(token,newUsername, newEmail, newBio, newLink) {
     .catch(error => {
         console.error('Error updating profile:', error);
         alert('Error updating profile');
+    });
+}
+
+async function deleteProfile(token){
+
+    const confirmation = confirm('Are you sure you want to delete your profile? This action cannot be undone.');
+    if (!confirmation) {
+        return;
+    }
+    
+    await fetch('/deleteProfile', {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    })
+    .then(response =>{
+        if (!response.ok){
+            if (response.status === 403 || response.status === 401) {
+                displayLoginMessage();
+                return;
+            }
+            throw new Error('Failed to delete user');
+        }
+        return response.json();
+    })
+    .then(data =>{
+        if (data.success){
+            alert("Successfully deleted User. Navigating back to Login Page");
+            window.location.href = "index.html";
+        }
+        else{
+            alert(data.message);
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Error occured while deleting user...');
     });
 }

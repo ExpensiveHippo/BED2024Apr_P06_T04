@@ -49,6 +49,20 @@ const updateProfile = async (req,res) =>{
         res.status(500).json({message: "Error updating User"});
     }
 }
+const deleteProfile = async(req,res) =>{
+    const username = req.user.username;
+    try{
+        const success = await User.deleteUser(username);
+        if(!success){
+            return res.status(404).json({success: false, message: 'User not found'});
+        }
+        res.json({success: true, message: "User deleted successfully"});
+    }
+    catch(err){
+        console.error('Error deleting user:', err);
+        res.status(500).json({success:false, message: 'Server Error while deleting user'});
+    }
+}
 
 const login = async(req,res) =>{
     const { username, password } = req.body;
@@ -103,10 +117,10 @@ const register = async(req,res) =>{
         res.status(500).json({ success: false, message: "Server error during registration" });
     }
 }
-
 module.exports = {
     login,
     register,
     getProfile,
     updateProfile,
+    deleteProfile,
 }

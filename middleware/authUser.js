@@ -19,6 +19,7 @@ const authenticateToken = (req,res,next) =>{
             // TODO: endpoints to be placed here for authorization of certain things
             "/createPost": ["admin","user"],
             "/updateProfile": ["admin","user"],
+            "/deleteProfile": ["admin","user"],
 
         }
 

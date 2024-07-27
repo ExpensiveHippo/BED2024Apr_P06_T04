@@ -66,5 +66,15 @@ class User{
         }
         return this.getUserByUsername(newUserData.username);
     }
+    static async deleteUser(username){
+        const connection = await sql.connect(dbConfig);
+        const sqlQuery = `DELETE FROM Users WHERE username = @username`;
+        const request = connection.request();
+        request.input('username', sql.VarChar, username);
+        const result = await request.query(sqlQuery);
+        connection.close();
+
+        return result.rowsAffected > 0; // returns bool to indicate if user was deleted.
+    }
 }
 module.exports = User;
