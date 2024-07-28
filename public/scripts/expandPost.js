@@ -25,6 +25,7 @@
                 }
             })
     }}
+
     async function fetchPostDetail(username) {
         // Extract the postId from the query parameters
         const urlParams = new URLSearchParams(window.location.search);
