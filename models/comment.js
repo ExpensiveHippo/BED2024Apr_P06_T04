@@ -1,27 +1,27 @@
 const sql = require("mssql");
 const dbConfig = require("../dbConfig");
-
 class Comments {
-    constructor(commentId, userId, contentType, contentId, content, username) {
+    constructor(commentId, userId, contentType, contentId, content) {
         this.commentId = commentId;
         this.userId = userId;
         this.contentType = contentType;
         this.contentId = contentId;
         this.content = content;
-        this.username= username;
     }
 
     static async getAllComments() {
-        const connection = await sql.connect(dbConfig);
-        const sqlQuery = `SELECT c.commentId, c.content,u.username FROM Comments c INNER JOIN Users u ON c.userId = u.id;`;
-        const request = connection.request();
-        const result = await request.query(sqlQuery);
-        connection.close();
-        return result.recordset.map(row => ({
-            commentId: row.commentId,
-            content: row.content,
-            username: row.username
-        }));
+        try {
+            const pool = await sql.connect(dbConfig);
+            const result = await pool.request().query(`
+                SELECT C.commentId, C.userId, C.contentType, C.contentId, C.content, U.username
+                FROM Comments C
+                JOIN Users U ON C.userId = U.id
+            `);
+            return result.recordset;
+        } catch (error) {
+            console.error('Error fetching comments:', error);
+            throw error;
+        }
     }
 
     static async getCommentsByUser(userId) {
@@ -36,88 +36,72 @@ class Comments {
             content: row.content,
             username: row.username
         }));
-    }/*
-    static async updateComment(id) {
-        const connection = await sql.connect(dbConfig);
-
-        const sqlQuery = `UPDATE Books SET title = @title, author = @author WHERE id = @id`; // Parameterized query
-
-        const request = connection.request();
-        request.input("id", id);
-        request.input("title", newBookData.title || null); // Handle optional fields
-        request.input("author", newBookData.author || null);
-
-        await request.query(sqlQuery);
-
-        connection.close();
-
-        return this.getBookById(id); // returning the updated book data
-    }
-    static async deleteComment(id) {
+    }    
+    static async updateComment(commentId, content) {
         try {
-            const connection = await sql.connect(dbConfig);
-            const sqlQuery = `DELETE FROM Comments WHERE commentId = @id`;
-            const request = connection.request();
-            request.input("id", id);
-            const result = await request.query(sqlQuery);
-            connection.close();
-            console.log(`Result of delete query: ${result.rowsAffected}`);
-            return result.rowsAffected > 0; // Indicate success based on affected rows
+            let pool = await sql.connect(dbConfig);
+            let result = await pool.request()
+                .input('commentId', sql.Int, commentId)
+                .input('content', sql.Text, content)
+                .query('UPDATE Comments SET content = @content WHERE commentId = @commentId');
+            return result.rowsAffected[0];
         } catch (error) {
-            console.error("Error in deleteComment model:", error);
+            console.error("Error updating comment: ", error);
             throw error;
         }
-    }*/
-    static async deleteComment(id) {
+    }    
+
+    static async createComment(userId, contentType, contentId, content) {
         try {
-            console.log(`Deleting comment with ID: ${id}`);
-            const connection = await sql.connect(dbConfig);
-            const sqlQuery = `DELETE FROM Comments WHERE commentId = @id`;
-            const request = connection.request();
-            request.input("id", id);
-            const result = await request.query(sqlQuery);
-            connection.close();
-            console.log(`Rows affected: ${result.rowsAffected}`);
-            if (result.rowsAffected > 0) {
-            return "Comment deleted successfully";}
+            let pool = await sql.connect(dbConfig);
+            let result = await pool.request()
+                .input('userId', sql.Int, userId)
+                .input('contentType', sql.VarChar, contentType)
+                .input('contentId', sql.Int, contentId)
+                .input('content', sql.Text, content)
+                .query('INSERT INTO Comments (userId, contentType, contentId, content) VALUES (@userId, @contentType, @contentId, @content)');
+            return result.rowsAffected[0];
         } catch (error) {
-            console.error("Error in deleteComment model:", error);
+            console.error("Error creating comment: ", error);
             throw error;
         }
     }
 
-  
-
-    static async createComment(postId, userId, comment, liked = false) {
+    static async deleteComment(id) {
         const connection = await sql.connect(dbConfig);
-    
-        // Assuming 'liked' defaults to false and 'Comments' table has an auto-increment 'commentId'
-        const sqlQuery = `
-            INSERT INTO Comments (postId, userId, comment, liked)
-            OUTPUT INSERTED.commentId, INSERTED.comment
-            VALUES (@postId, @userId, @comment, @liked);
-        `;
-    
+        const sqlQuery = `DELETE FROM Comments WHERE commentId = @id`;
         const request = connection.request();
-        request.input('postId', sql.Int, postId);
-        request.input('userId', sql.Int, userId);
-        request.input('comment', sql.NVarChar(sql.MAX), comment);
-        request.input('liked', sql.Bit, liked);
-    
+        request.input("id", sql.Int, id);
         const result = await request.query(sqlQuery);
-    
         connection.close();
-    
-        // Assuming the result contains the inserted 'commentId' and 'comment'
-        if (result.recordset.length > 0) {
-            return {
-                commentId: result.recordset[0].commentId,
-                comment: result.recordset[0].comment
-            };
-        } else {
-            throw new Error('Failed to create comment');
+        return result.rowsAffected[0] > 0;
+    }
+    static async createComment(newComment) {
+        const connection = await sql.connect(dbConfig);
+        try {
+            const sqlQuery = `INSERT INTO Comments (userId, contentType, contentId, content)
+                              OUTPUT Inserted.commentId
+                              VALUES (@userId, @contentType, @contentId, @content)`;
+            const request = connection.request();
+            request.input("userId", sql.Int, newComment.userId);
+            request.input("contentType", sql.VarChar, newComment.contentType);
+            request.input("contentId", sql.Int, newComment.contentId);
+            request.input("content", sql.Text, newComment.content);
+            const result = await request.query(sqlQuery);
+            connection.close();
+            if (result.recordset.length > 0) {
+                return this.getCommentsByUser(result.recordset[0].commentId);
+            } else {
+                throw new Error('Failed to create comment');
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        } finally {
+            if (connection) {
+                connection.close();
+            }
         }
     }
 }
-
 module.exports = Comments;
