@@ -1,4 +1,6 @@
+
 document.addEventListener('DOMContentLoaded', fetchUser);
+
 async function fetchUser(){
     const token = localStorage.getItem("userToken");
     if (token){ 
@@ -31,12 +33,10 @@ async function fetchPostDetail(username) {
     const urlParams = new URLSearchParams(window.location.search);
     const accessToken = localStorage.getItem("userToken");
     const postId = urlParams.get('postId');
-
     if (!postId) {
         console.error('Post ID not found in query parameters.');
         return;
     }
-
     try {
         const response = await fetch(`/Posts/${postId}`,{
             method: 'GET',
@@ -47,25 +47,19 @@ async function fetchPostDetail(username) {
         if (!response.ok) {
             throw new Error(`Failed to fetch post: ${response.status} ${response.statusText}`);
         }
-
         const post = await response.json();
-        console.log(post);
-
         const postDetailContainer = document.getElementById('postDetailContainer');
         if (!postDetailContainer) {
             console.error('Post detail container not found.');
             return;
         }
-      
-        console.log(username)
-
         postDetailContainer.innerHTML = `
             <h5>Posted By: ${post.post.username}</h5>
             <h2>${post.post.title}</h2>
             <p>${post.post.content}</p>
             <div class="post-icons">
                 <button class="fas fa-heart"></button>
-                <button class="fas fa-comment"></button>
+                <button class="fas fa-comment" id="commentIcon"></button>
                 <button class="fa fa-ellipsis-v" aria-hidden="true"></button>
             </div>
         `;
@@ -96,12 +90,11 @@ async function fetchPostDetail(username) {
                 dropdownMenu.style.display = 'none';
             }
         });
-
         // get arguements for Like
         const token = localStorage.getItem('userToken');
         const contentType = "Posts";
         const contentId = postId;
-
+      
         document.getElementById("kebabReport").addEventListener('click', () => {
             document.getElementById("reason-container").style.display = "block";
         })
@@ -150,19 +143,15 @@ async function fetchPostDetail(username) {
             }
         })
         .catch(error => console.log("Error: " + error))  
-
         iconLike.addEventListener('click', async () => {
-
             // default to add like
             var method = 'POST';
             var endpoint = '/like';
-
             // if user has already liked, change method and endpoint to del like
             if (iconLike.classList.contains('clicked')) {
                 method = 'DELETE';
                 endpoint = '/unlike';
             }
-
             const requestBody = {
                 contentType: contentType,
                 contentId: contentId
@@ -183,6 +172,9 @@ async function fetchPostDetail(username) {
                 iconLike.classList.toggle('clicked');
             } 
         })
+        iconComment.addEventListener('click', () => {
+            window.location.href = 'comment.html';
+        });
     }   
     catch (error) {
         console.error('Error fetching post details:', error);
