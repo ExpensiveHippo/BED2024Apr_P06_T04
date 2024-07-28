@@ -66,10 +66,11 @@ async function addReportContainer(token, report) {
                 if (res.status === 204) {
                     console.log(`Report under ${report.contentId} removed`);
                     location.reload();
+                    deleteContent(token, report.contentType, report.contentId);
                 } else {
                     console.log("deleteReports:error");
                 }})
-            .catch(error => console.error(error))
+            .catch(error => console.error(error))            
         })
 
         const btnIgnore = document.createElement("button");
@@ -134,4 +135,28 @@ function applyFilter(token, reportList) {
 
     document.getElementById("report-box").innerHTML = "<h2 class=\"filter-header\">Filter Reports</h2>";
     sortedReports.forEach(report => addReportContainer(token, report))
+}
+
+async function deleteContent(token, contentType, contentId) {
+    var endpoint;
+
+    if (contentType === "Posts") {
+        endpoint = `/deletePost/${contentId}`
+    } else {
+        // Comment endpoint wouldn't work
+        console.log("buh");
+        return;
+    }
+
+    fetch(endpoint, {
+        method: "DELETE",
+        headers: {
+            'Authorization': `Bearer ${token}` 
+        }
+    })
+    .then(res => {
+        if (res.status === 204) {
+            console.log(`${contentType} ${contentId} deleted`);
+        }
+    })
 }
