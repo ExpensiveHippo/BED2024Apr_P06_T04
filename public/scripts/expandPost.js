@@ -1,5 +1,3 @@
-const { json } = require("body-parser");
-
 document.addEventListener('DOMContentLoaded', fetchUser);
 async function fetchUser(){
     const token = localStorage.getItem("userToken");
@@ -105,19 +103,19 @@ async function fetchPostDetail(username) {
         const contentId = postId;
 
         document.getElementById("kebabReport").addEventListener('click', () => {
-            document.getElementById("reason-container").style.visibility = "visible";
+            document.getElementById("reason-container").style.display = "block";
         })
 
         document.getElementById("btn-cancel").addEventListener('click', () => {
-            document.getElementById("reason-container").style.visibility = "gone";
+            document.getElementById("reason-container").style.display = "none";
         })
 
         document.getElementById("btn-submit").addEventListener('click', () => {
             const reason = document.getElementById("selectReason").value;
-            document.getElementById("reason-container").style.visibility = "gone";
+            document.getElementById("reason-container").style.display = "none";
 
             var body = {
-                industry: post.post.industry,
+                industry: "Education",
                 contentType: "Posts",
                 contentId: postId,
                 reason: reason
