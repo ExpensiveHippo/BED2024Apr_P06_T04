@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const sql = require("mssql");
 const dbConfig = require("./dbConfig");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger-output.json");
 
 
 const userController = require("./controllers/userController");
@@ -21,6 +23,7 @@ const port = 3000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public')); // serve static files (HTML, CSS, JS)
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 
