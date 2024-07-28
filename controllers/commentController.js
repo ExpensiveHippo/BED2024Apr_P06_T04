@@ -9,78 +9,83 @@ const getAllComments = async (req, res) => {
         res.status(500).json({ success: false, message: "Server error fetching comments" });
     }
 };
-
 const getCommentsByUser = async (req, res) => {
-    const userId = req.params.userId; 
-
-    try {
-        const comments = await Comments.getCommentsByUser(userId);
-        if (comments.length > 0) {
-            res.json({ success: true, comments });
-        } else {
-            res.status(404).json({ success: false, message: "User not found" });
-        }
-    } catch (error) {
-        console.error("Error fetching comments:", error);
-        res.status(500).json({ success: false, message: "Server error fetching user." });
-    }
-};
-
-const createComment = async (req, res) => {
-    const { postId, userId, comment, liked } = req.body;
-
-    try {
-        const newComment = await Comments.createComment(postId, userId, comment, liked);
-        res.status(201).json({ success: true, message: "Comment created successfully", commentId: newComment.commentId, comment: newComment.comment });
-    } catch (error) {
-        console.error("Error creating comment:", error);
-        res.status(500).json({ success: false, message: "Server error creating comment" });
-    }
-};
-const updateComment = async (req, res) => {
-  const bookId = parseInt(req.params.id);
-  const newBookData = req.body;
+  const userId = parseInt(req.params.userId); 
 
   try {
-    const updatedBook = await Book.updateBook(bookId, newBookData);
-    if (!updatedBook) {
-      return res.status(404).send("Book not found");
-    }
-    res.json(updatedBook);
+      const comments = await Comments.getCommentsByUser(userId);
+      if (comments.length > 0) {
+          res.json({ success: true, comments });
+      } else {
+          res.status(404).json({ success: false, message: "No comments found for this user" });
+      }
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Error updating book");
+      console.error("Error fetching comments by user:", error);
+      res.status(500).json({ success: false, message: "Server error fetching comments" });
+  }
+};
+
+
+const createComment = async (req, res) => {
+    const newComment = req.body;
+
+    try {
+        if (!newComment.userId || !newComment.contentType || !newComment.contentId || !newComment.content) {
+            return res.status(400).json({ success: false, message: "All fields are required" });
+        }
+
+        const result = await Comments.createComment(newComment);
+        res.status(201).json({ success: true, comment: result });
+    } catch (error) {
+        console.error("Error creating comment:", error);
+        res.status(500).json({ success: false, message: "Error creating comment" });
+    }
+};
+
+const updateComment = async (req, res) => {
+  const commentId = parseInt(req.params.id);
+  const { content } = req.body;
+
+  if (!commentId || !content) {
+      return res.status(400).json({ success: false, message: "Comment ID and content are required" });
+  }
+
+  try {
+      const updatedComment = await Comments.updateComment(commentId, content);
+
+      if (updatedComment) {
+          res.status(200).json({
+              success: true,
+              message: "Comment updated successfully"
+          });
+      } else {
+          res.status(404).json({ success: false, message: "Comment not found or not updated" });
+      }
+  } catch (error) {
+      console.error("Error updating comment:", error);
+      res.status(500).json({ success: false, message: "Server error updating comment" });
   }
 };
 
 const deleteComment = async (req, res) => {
     const commentId = parseInt(req.params.id);
-    const Smessage = "Comment deleted successfully";
-    const Famessage = "Error deleting Comment.";
+
     try {
-      console.log(`Attempting to delete comment with ID: ${commentId}`);
-      const success = await Comments.deleteComment(commentId);
-      if (!success) {
-        console.log(`Comment with ID ${commentId} not found`);
-        return res.status(404).send("Comment not found");
-      }
-      console.log(`Comment with ID ${commentId} deleted successfully`);
-      res.status(204).send();
-      return Smessage;
+        const success = await Comments.deleteComment(commentId);
+        if (!success) {
+            return res.status(404).send("Comment not found");
+        }
+        res.status(204).send();
     } catch (error) {
-      console.error("Error in deleteComment controller:", error);
-      res.status(500).send("Error deleting Comment.");
-      return Famessage;
+        console.error("Error deleting comment:", error);
+        res.status(500).send("Error deleting comment");
     }
 };
-  
+
 module.exports = {
     getAllComments,
     getCommentsByUser,
     createComment,
-    deleteComment,
-    updateComment
+    updateComment,
+    deleteComment
 };
-  
-
-

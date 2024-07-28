@@ -8,7 +8,7 @@ class Comments {
         this.contentId = contentId;
         this.content = content;
     }
-
+ 
     static async getAllComments() {
         try {
             const pool = await sql.connect(dbConfig);
@@ -23,7 +23,7 @@ class Comments {
             throw error;
         }
     }
-
+ 
     static async getCommentsByUser(userId) {
         const connection = await sql.connect(dbConfig);
         const sqlQuery = `SELECT c.commentId, c.content,u.username FROM Comments c INNER JOIN Users u ON c.userId = u.id WHERE userId = @userId`;
@@ -50,7 +50,7 @@ class Comments {
             throw error;
         }
     }    
-
+ 
     static async createComment(userId, contentType, contentId, content) {
         try {
             let pool = await sql.connect(dbConfig);
@@ -66,7 +66,7 @@ class Comments {
             throw error;
         }
     }
-
+ 
     static async deleteComment(id) {
         const connection = await sql.connect(dbConfig);
         const sqlQuery = `DELETE FROM Comments WHERE commentId = @id`;

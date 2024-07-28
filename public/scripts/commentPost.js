@@ -1,14 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
     fetchComments();
-
+ 
     document.getElementById("commentForm").addEventListener("submit", async (event) => {
         event.preventDefault();
-        
+       
         const userId = document.getElementById("userId").value;
         const contentType = document.getElementById("contentType").value;
         const contentId = document.getElementById("contentId").value;
         const content = document.getElementById("content").value;
-
+ 
         try {
             const response = await fetch('/createComment', {
                 method: 'POST',
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
                 body: JSON.stringify({ userId, contentType, contentId, content })
             });
-            
+           
             if (response.ok) {
                 alert('Comment added successfully!');
                 fetchComments(); // Refresh comments list
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
-
+ 
 async function fetchComments() {
     try {
         const response = await fetch('/Comments');
@@ -46,16 +46,16 @@ async function fetchComments() {
         alert('Error fetching comments.');
     }
 }
-
+ 
 function displayComments(comments) {
     const commentContainer = document.getElementById("commentContainer");
     commentContainer.innerHTML = ''; // Clear previous comments
-
+ 
     comments.forEach(comment => {
         const commentElement = document.createElement('div');
         commentElement.classList.add('comment');
         commentElement.dataset.commentId = comment.commentId;
-
+ 
         commentElement.innerHTML = `
             <p><strong>User:</strong> ${comment.username}</p>
             <p><strong>Content:</strong> ${comment.content}</p>
@@ -66,11 +66,11 @@ function displayComments(comments) {
                 <option value="view">View All User Comments</option>
             </select>
         `;
-
+ 
         commentContainer.appendChild(commentElement);
     });
 }
-
+ 
 async function handleCommentAction(userId, commentId, action, element) {
     switch (action) {
         case 'delete':
@@ -86,13 +86,13 @@ async function handleCommentAction(userId, commentId, action, element) {
             console.error('Unknown action:', action);
     }
 }
-
+ 
 async function deleteComment(commentId) {
     try {
         const response = await fetch(`/deleteComments/${commentId}`, {
             method: 'DELETE'
         });
-
+ 
         if (response.ok) {
             alert('Comment deleted successfully!');
             fetchComments(); // Refresh comments list
@@ -104,10 +104,10 @@ async function deleteComment(commentId) {
         alert('Error deleting comment.');
     }
 }
-
+ 
 async function updateComment(commentId) {
     const newContent = prompt('Enter new content:');
-    
+   
     if (newContent) {
         try {
             const response = await fetch(`/updateComments/${commentId}`, {
@@ -117,7 +117,7 @@ async function updateComment(commentId) {
                 },
                 body: JSON.stringify({ content: newContent })
             });
-            
+           
             if (response.ok) {
                 alert('Comment updated successfully!');
                 fetchComments(); // Refresh comments list
@@ -130,17 +130,17 @@ async function updateComment(commentId) {
         }
     }
 }
-
+ 
 async function viewUserDetails(userId, dropdownElement) {
     try {
         const response = await fetch(`/Comments/${userId}`);
         const data = await response.json();
         console.log(data);
-
-        if (data.success) { 
+ 
+        if (data.success) {
             const userDetails = document.createElement('div');
             userDetails.classList.add('user-details');
-
+ 
             data.comments.forEach(comment => {
                 userDetails.innerHTML += `
                     <p><strong>Comment:</strong> ${comment.content}</p>
@@ -152,7 +152,7 @@ async function viewUserDetails(userId, dropdownElement) {
             if (existingDetails) {
                 existingDetails.remove();
             }
-
+ 
             commentElement.appendChild(userDetails);
         } else {
             alert('Failed to fetch user details.');

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles/mhstyles.css">
+</head>
+<body>
+    <header>
+        <nav class = 'nav-bar'>
+            <p class = 'logo'>WEBSITE</p>
+            <input type="text" placeholder="Search for anything...">
+            <a href="#">About</a>
+            <a href="industry.html">Industry</a>
+            <a href="post.html">Posts</a>
+            <a href="profile.html">Profile</a>
+        </nav>
+    </header>
+    <main>
+        <div style="background-color: #f7fafc; min-height: 100vh;">
+            <div style="max-width: 1200px; margin: 0 auto; padding: 32px;">
+              <h1 style="font-size: 2.25rem; font-weight: bold; margin-bottom: 16px; text-align: center; color: #111827;">
+                Choose Your Industry
+              </h1>
+              <p style="font-size: 1.125rem; text-align: center; margin-bottom: 48px; color: #4b5563;">
+                Select an industry to view related posts
+              </p>
+              <div style="display: grid; grid-template-columns: 1fr; gap: 32px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                
+                <div style="border: 1px solid #e5e7eb;">
+                  <div style="padding: 16px;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 8px; color: #111827;">Education</h2>
+                    <p style="color: #4b5563; line-height: 1.4;">Education and IT are interconnected through digital classrooms, online learning platforms, and interactive tools, enhancing accessibility, personalized learning, and collaboration between students and educators globally.</p>
+                  </div>
+                  <div style="display: flex; justify-content: center; align-items: center; padding: 48px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: #1f2937; height: 96px; width: 96px;">
+                      <circle cx="12" cy="12" r="10" stroke-width="2"></circle>
+                      <circle cx="12" cy="12" r="2" fill="currentColor"></circle>
+                    </svg>
+                  </div>
+                  <div style="display: flex; justify-content: center; padding: 16px;">
+                    <button class="view-posts-button" data-industry="Education" style="background-color: #1f2937; color: #f9fafb; padding: 8px 16px; border: none; cursor: pointer; transition: background-color 0.3s;">
+                      View Related Posts
+                    </button>
+                  </div>
+                </div>
+                
+                <div style="border: 1px solid #e5e7eb;">
+                  <div style="padding: 16px;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 8px; color: #111827;">Healthcare</h2>
+                    <p style="color: #4b5563; line-height: 1.4;">Healthcare and IT are related through electronic health records, telemedicine, medical research, diagnostic tools, and health monitoring, enhancing patient care, efficiency, and accessibility in medical services.</p>
+                  </div>
+                  <div style="display: flex; justify-content: center; align-items: center; padding: 48px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: #1f2937; height: 96px; width: 96px;">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <div style="display: flex; justify-content: center; padding: 16px;">
+                    <button  class="view-posts-button" data-industry="Healthcare" style="background-color: #1f2937; color: #f9fafb; padding: 8px 16px; border: none; cursor: pointer; transition: background-color 0.3s;">
+                      View Related Posts
+                    </button>
+                  </div>
+                </div>
+                
+                <div style="border: 1px solid #e5e7eb;">
+                  <div style="padding: 16px;">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 8px; color: #111827;">Agriculture</h2>
+                    <p style="color: #4b5563; line-height: 1.4;">Agriculture and IT are connected through precision farming, automated equipment, data analysis, drones, and smart sensors, enhancing crop management, yield prediction, resource efficiency, and sustainable farming practices.</p>
+                  </div>
+                  <div style="display: flex; justify-content: center; align-items: center; padding: 48px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: #1f2937; height: 96px; width: 96px;">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.257 16.657a1.5 1.5 0 102.122-2.122A1.5 1.5 0 008.257 16.657zM6.221 4.403a7.002 7.002 0 0110.558 0C18.667 6.22 19.5 8.583 19.5 11c0 3.866-3.58 7-8 7s-8-3.134-8-7c0-2.417.833-4.78 2.221-6.597z" />
+                      <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                  </div>
+                  <div style="display: flex; justify-content: center; padding: 16px;">
+                    <button class="view-posts-button" data-industry="Agriculture" style="background-color: #1f2937; color: #f9fafb; padding: 8px 16px; border: none; cursor: pointer; transition: background-color 0.3s;">
+                      View Related Posts
+                    </button>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          
+    </main>
+    <script src="scripts/industry.js"></script>
+</body>
+</html>

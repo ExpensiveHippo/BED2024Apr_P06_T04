@@ -11,18 +11,38 @@
     <header>
         <nav class = 'nav-bar'>
             <p class = 'logo'>WEBSITE</p>
-            <input type="text" placeholder="Search for anything...">
-            <a href="#">About</a>
-            <a href="#">Industry</a>
-            <a href="#">Posts</a>
-            <a href="#">User1</a>
+            <input id="user-search-input" type="text" placeholder="Search for users...">
+            <div id="user-suggestions" class="suggestions"></div>
+            <a href="industry.html">Industry</a>
+            <a href="post.html">Posts</a>
+            <a href="profile.html">Profile</a>
         </nav>
     </header>
     <main>
         <div id="postDetailContainer">
             <!-- Post details will be dynamically added here -->
         </div>
+        <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
+            <a href="#" class="report-option" id="kebabReport">Report</a>
+            <a href="#" class="edit-option" style="display: none;">Edit</a>
+            <a href="#" class="delete-option" style="display: none;">Delete</a>
+        </div>
+        <div id="reason-container">
+            <label htmlFor="selectReason">Reason</label>
+            <select id="selectReason">
+                <option value="Spam">Spam</option>
+                <option value="Abuse">Abuse</option>
+                <option value="Misinformation">Misinformation</option>
+                <option value="Hate Speech">Hate Speech</option>
+                <option value="Copyright Violation">Copyright Violation</option>
+            </select>
+            <div class="btn-container">
+                <button id="btn-cancel">Cancel</button>
+                <button id="btn-submit">Submit</button>
+            </div>
+        </div>
     </main>
     <script src="./scripts/expandPost.js"></script>
+    <script src="./scripts/searchAllUsers.js"></script>
 </body>
 </html>
