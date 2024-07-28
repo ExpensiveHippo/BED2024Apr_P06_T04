@@ -59,6 +59,21 @@ const deletePost = async (req, res) => {
         res.status(500).json({ success: false, message: "Server error deleting post" });
     }
 }
+const getPostByTitle = async (req, res) => {
+    const currentSearchQuery = req.params.currentSearchQuery; // Assuming postId is passed as a route parameter
+
+    try {
+        const post = await Post.getPostByTitle(currentSearchQuery);
+        if (post) {
+            res.json({ success: true, post });
+        } else {
+            res.status(404).json({ success: false, message: "Post not found" });
+        }
+    } catch (error) {
+        console.error("Error fetching post:", error);
+        res.status(500).json({ success: false, message: "Server error fetching post" });
+    }
+};
 module.exports = {
     getAllPosts,
     createPost,
