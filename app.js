@@ -10,7 +10,6 @@ const userController = require("./controllers/userController");
 const postController = require("./controllers/postController");
 const likeController = require("./controllers/likeController");
 const commentController = require("./controllers/commentController");
-const authenticateToken = require('./middleware/authUser');
 const app = express();
 const port = 3000;
 

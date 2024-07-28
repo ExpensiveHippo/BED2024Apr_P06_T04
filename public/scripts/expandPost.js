@@ -78,6 +78,7 @@
                 document.querySelector('.delete-option').style.display = 'block';
                 
                 document.querySelector('.edit-option').href = `updatePost.html?postId=${postId}`;
+                document.querySelector('.delete-option').href = `deletePost.html?postId=${postId}`;
             } else {
                 document.querySelector('.edit-option').style.display = 'none';
                 document.querySelector('.delete-option').style.display = 'none';

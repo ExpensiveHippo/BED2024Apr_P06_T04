@@ -68,13 +68,12 @@ class Post{
         connection.close();
         return this.getPostById(newUpdateData.postId)
     }
-    static async deletePost(username, postId){
+    static async deletePost(postId){
         const connection = await sql.connect(dbConfig);
-        const sqlQuery = 'DELETE Posts WHERE postId = @postId'
+        const sqlQuery = "DELETE FROM Likes WHERE contentType = 'Posts' AND contentId = @postId; DELETE FROM Comments WHERE contentType = 'Posts' AND contentId = @postId;DELETE FROM Posts WHERE postId = @postId;"
 
         const request = connection.request();
         request.input('postId',sql.Int,postId)
-        request.input('username',sql.VarChar,username)
 
         const result = await request.query(sqlQuery);
         if (result.rowsAffected === 0){

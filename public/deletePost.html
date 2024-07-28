@@ -19,15 +19,14 @@
         </nav>
     </header>
     <main>
-        <div id="postDetailContainer">
-            <!-- Post details will be dynamically added here -->
-        </div>
-        <div id="dropdownMenu" class="dropdown-menu" style="display: none;">
-            <a href="#" class="report-option">Report</a>
-            <a href="#" class="edit-option" style="display: none;">Edit</a>
-            <a href="#" class="delete-option" style="display: none;">Delete</a>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <a href = '#' class="close">&times;</a>
+                <p>Are you sure you want to delete this post?</p>
+                <button id="delete-button">Delete</button>
+            </div>
         </div>
     </main>
-    <script src="./scripts/expandPost.js"></script>
+    <script src="./scripts/deletePost.js"></script>
 </body>
 </html>

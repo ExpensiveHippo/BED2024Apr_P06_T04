@@ -49,10 +49,10 @@ const updatePost = async (req, res) => {
     }
 };
 const deletePost = async (req, res) => {
-    const {postId, username} = req.body;
+    const postId = req.params.postId;
 
     try{
-        const newDelete = await Post.deletePosts({ postId, username});
+        const newDelete = await Post.deletePost(postId);
         res.status(201).json({ success: true, message: "Post deleted successfully", post: newDelete });
     } catch (error) {
         console.error("Error deleting post:", error);
