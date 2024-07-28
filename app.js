@@ -8,6 +8,7 @@ const postController = require("./controllers/postController");
 const likeController = require("./controllers/likeController");
 const commentController = require("./controllers/commentController");
 const authenticateToken = require('./middleware/authUser');
+const validateUser = require("./middleware/joiUser");
 const app = express();
 const port = 3000;
 
@@ -30,12 +31,12 @@ app.get("/getAllUsers",userController.getAllUsernames);
 
 app.post("/createPost",authenticateToken, postController.createPost);
 app.post('/login', userController.login);
-app.post('/register', userController.register);
+app.post('/register', validateUser, userController.register);
 app.post('/like', likeController.createLike);
 app.post('/createComment', commentController.createComment);
 
 app.put("/updatePost/:postId/:username", postController.updatePost)
-app.put("/updateProfile", authenticateToken, userController.updateProfile);
+app.put("/updateProfile",validateUser, authenticateToken, userController.updateProfile);
 app.delete('/unlike', likeController.deleteLike);
 app.delete('/deletePost/:postId/:username',postController.deletePost)
 app.delete('/deleteProfile',authenticateToken,userController.deleteProfile);
