@@ -1,10 +1,11 @@
 const Like = require("../models/like");
 
 const createLike = async (req, res) => {
-    const newLike = req.body;
+    const user = req.user;
+    const body = req.body;
     
     try {
-        const result = await Like.createLike(newLike);
+        const result = await Like.createLike(user, body);
         res.status(201).json(result);
     } 
     catch (error) {
@@ -14,10 +15,11 @@ const createLike = async (req, res) => {
 }
 
 const deleteLike = async (req, res) => {
-    const thisLike = req.body;
+    const body = req.body;
+    const user = req.user;
 
     try {
-        const success = await Like.deleteLike(thisLike);
+        const success = await Like.deleteLike(user, body);
         if (!success) {
             res.status(404).send("Like not found");
         }
@@ -32,12 +34,12 @@ const deleteLike = async (req, res) => {
 }
 
 const getLike = async (req, res) => {
-    const userId = parseInt(req.params.userId);
+    const user = req.user;
     const contentType = req.params.contentType;
     const contentId = parseInt(req.params.contentId);
 
     try {
-        const like = await Like.getLike(userId, contentType, contentId);
+        const like = await Like.getLike(user, contentType, contentId);
         res.json(like);
     }
     catch (error) {

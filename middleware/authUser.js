@@ -9,21 +9,28 @@ const authenticateToken = (req,res,next) =>{
     if (!token){
         return res.status(401).json({message:"Unauthorized"});
     }
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err,user) =>{
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) =>{
         if (err) {
             console.error(err);
             return res.status(403).json({message: "Forbidden"});
         }
         const authorizedRoles = {
             "/getUser": ["admin","user"],
-            // TODO: endpoints to be placed here for authorization of certain things
             "/createPost": ["admin","user"],
+            "/updatePost/[0-99]": ["admin","user"],
+            "/deletePost/[0-99]": ["admin","user"],
+            "/like": ["user", "admin"],
+            "/like/[A-Za-z]+/[0-9]+": ["user", "admin"],
+            "/unlike": ["user", "admin"],
+            "/reports": ["admin"],
+            "/createReport": ["user", "admin"],
+            "/deleteReport/[0-9]+": ["admin"],
+            "/deleteReports/[A-Za-z]+/[0-9]+": ["admin"]
             "/updateProfile": ["admin","user"],
             "/deleteProfile": ["admin","user"],
 
         }
-
-        const requestedEndPoint = req.url; 
+        const requestedEndPoint = req.url;
         const userRole = user.role;
 
         const authorizedRole = Object.entries(authorizedRoles).find(
@@ -36,9 +43,9 @@ const authenticateToken = (req,res,next) =>{
     
 
         if (!authorizedRole) {
-        return res.status(403).json({ message: "Forbidden 3" });
+            return res.status(403).json({ message: "Forbidden" });
         }
-    
+
         req.user = user;
         next();
     });

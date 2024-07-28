@@ -25,6 +25,23 @@ class Post{
         )
         : null;
     } 
+    static async getPostByIndustry(industry){
+        const connection = await sql.connect(dbConfig);
+        const sqlQuery = `SELECT p.postId,  u.username, p.title, p.content from Posts p inner join Users u on p.Id = u.Id where p.industry = @industry`;
+        const request =  connection.request();
+        request.input('industry',sql.VarChar,industry);
+        const result =  await request.query(sqlQuery);
+        connection.close();
+
+        return result.recordset[0] 
+        ? new Post(
+            result.recordset[0].postId,
+            result.recordset[0].username,
+            result.recordset[0].title,
+            result.recordset[0].content
+        )
+        : null;
+    } 
     static async getAllPost(){
         const connection = await sql.connect(dbConfig);
         const sqlQuery = `SELECT * from Posts`;
@@ -36,10 +53,10 @@ class Post{
     } 
     static async createPost(newPostData){
         const connection = await sql.connect(dbConfig);
-        const sqlQuery = `INSERT INTO Posts (username,industry,title,content) VALUES(@username,@industry,@title,@content); SELECT SCOPE_IDENTITY() AS postId;`
+        const sqlQuery = `INSERT INTO Posts (id,industry,title,content) VALUES(@id,@industry,@title,@content); SELECT SCOPE_IDENTITY() AS postId;`
 
         const request = connection.request();
-        request.input('username',sql.VarChar,newPostData.username);
+        request.input('id',sql.Int,newPostData.id);
         request.input('industry',sql.VarChar,newPostData.industry)
         request.input('title',sql.VarChar,newPostData.title);
         request.input('content',sql.VarChar,newPostData.content)
@@ -51,31 +68,29 @@ class Post{
         connection.close();
         return this.getPostById(newPostData.postId);
     }
-    static async updatePost(newUpdateData){
+    static async updatePost(newUpdateData,postId){
         const connection = await sql.connect(dbConfig);
-        const sqlQuery = 'UPDATE Posts SET title = @title, content = @content, industry = @industry WHERE username = @username AND postId = @postId;'
+        const sqlQuery = 'UPDATE Posts SET title = @title, content = @content, industry = @industry WHERE postId = @postId;'
 
         const request = connection.request();
-        request.input('postId',sql.Int,newUpdateData.postId);
-        request.input('username',sql.VarChar,newUpdateData.username);
+        request.input('postId',sql.Int,postId)
         request.input('industry',sql.VarChar,newUpdateData.industry)
         request.input('title',sql.VarChar,newUpdateData.title);
         request.input('content',sql.VarChar,newUpdateData.content)
 
         const result = await request.query(sqlQuery);
-        if (result.recordset.length === 0){
+        if (result.rowsAffected === 0){
             throw new Error("Failed to create Post");
         }
         connection.close();
         return this.getPostById(newUpdateData.postId)
     }
-    static async deletePost(username, postId){
+    static async deletePost(postId){
         const connection = await sql.connect(dbConfig);
-        const sqlQuery = 'DELETE Posts WHERE postId = @postId AND username = @username'
+        const sqlQuery = "DELETE FROM Likes WHERE contentType = 'Posts' AND contentId = @postId; DELETE FROM Comments WHERE contentType = 'Posts' AND contentId = @postId;DELETE FROM Posts WHERE postId = @postId;"
 
         const request = connection.request();
         request.input('postId',sql.Int,postId)
-        request.input('username',sql.VarChar,username)
 
         const result = await request.query(sqlQuery);
         if (result.rowsAffected === 0){

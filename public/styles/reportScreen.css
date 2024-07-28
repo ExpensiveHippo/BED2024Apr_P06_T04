@@ -1,0 +1,92 @@
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+.btn-ignore {
+    background-color: #1a202c;
+    color: #fff;
+    padding: 8px 16px;
+    border: 0;
+    border-radius: 4px;
+}
+
+.btn-delete {
+    background-color: #f56565;
+    color: #fff;
+    padding: 8px 16px;
+    border: 0;
+    border-radius: 4px;
+}
+
+.report-box {
+    width: 75%; 
+    padding: 32px;
+}
+
+.report-container {
+    margin-bottom: 16px;
+    border: 3px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.report-header {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.btn-container {
+    display: flex; 
+    justify-content: space-evenly;
+}
+
+.report-box > h1 {
+    margin-bottom: 16px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.filter-box {
+    width: 25%; 
+    background-color: #f5f5f5; 
+    padding: 32px;
+}
+
+.filter-header {
+    margin-bottom: 16px; 
+    font-size: 18px; 
+    font-weight: medium;
+}
+
+.filter-container {
+    margin-bottom: 16px;
+}
+
+select {
+    width: 100%; 
+    padding: 8px;
+    margin-top: 8px;
+}
+
+.btn-apply {
+    width: 100%;
+    margin-bottom: 16px;
+    padding: 8px;
+    background-color: #1a202c;
+    color: white;
+    border: 0;
+    border-radius: 4px;
+}
+
+.report-type {
+    font-style: italic;
+}
+
+.content-title {
+    font-size: 18px;
+
+}
