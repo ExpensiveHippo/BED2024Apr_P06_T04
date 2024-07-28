@@ -14,8 +14,6 @@ create table Users(
 	email varchar(100) not null,
 	password varchar(100) not null,
 	role varchar(16) not null,
-	bio varchar(255) null,
-	link varchar(100) null,
 
 	constraint PK_Users primary key (id),
 	constraint CK_Users check (role in ('admin', 'user'))
