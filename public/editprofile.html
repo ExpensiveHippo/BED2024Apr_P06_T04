@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="styles/mhstyles.css">
+</head>
+<body>
+
+    <header>
+        <nav class='nav-bar'>
+            <p class='logo'>WEBSITE</p>
+            <input id="user-search-input" type="text" placeholder="Search for users...">
+            <div id="user-suggestions" class="suggestions"></div>
+            <a href="#">About</a>
+            <a href="#">Industry</a>
+            <a href="post.html">Posts</a>
+            <a href="profile.html">Profile</a>
+        </nav>
+    </header>
+
+    <body style="background: #ffffff;">
+        <div style="background: #ffffff;">
+            <!-- Header -->
+            <div style="background: #f9fafb;">
+                <div style="max-width: 1280px; margin: 0 auto; padding-left: 16px; padding-right: 16px;">
+                    <div style="display: flex; align-items: center; gap: 24px;">
+                        <!-- Profile Info -->
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 16px; padding-bottom: 20px;">
+                                <div>
+                                    <h1 style="font-size: 3rem; font-weight: bold; color: #111827;">Name:</h1>
+                                    <input type="text" id="edit-profile-name" style="font-size: 2rem; color: #111827; border: 1px solid #d1d5db; border-radius: 7px; background: none;" placeholder="Profile Name" value="Jane Smith">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Action Buttons -->
+                        <div>
+                            <div style="display: flex; gap: 16px; flex-direction: row">
+                                <button id="delete-profile"style="border: 1px solid #B91C1C; color: #B91C1C; padding: 0.5rem 1rem; background: none; border-radius: 0.375rem; width: 150px; font-size: 1.2rem; background-color: #FEE2E2;">
+                                    Delete Profile
+                                </button>                
+                                <button id="save-changes" style="background: #3b82f6; color: #fff; padding: 0.5rem 1rem; border-radius: 0.375rem; font-size: 1.2rem;">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <!-- Main Content -->
+            <div style="max-width: 1280px; margin: 0 auto; padding-left: 16px; padding-right: 16px; padding-top: 16px;">
+                <div style="display: flex; flex-direction: column; gap: 32px;">
+                    <!-- Left Sidebar -->
+                    <div style="width: 100%; flex: none;">
+                        <div style="position: sticky; top: 1.5rem; display: flex; flex-direction: column; gap: 16px;">
+                            <!-- Bio -->
+                            <div style="padding: 16px; background: #f9fafb; border-radius: 0.375rem;">
+                                <h2 style="margin-bottom: 16px; font-size: 1.125rem; font-weight: 600; color: #111827; font-size: 2rem">About:</h2>
+                                <textarea id="edit-profile-bio" style="font-size: 1.3rem; width: 100%; border: 1px solid #d1d5db; border-radius: 0.375rem; background: none;"placeholder = "profile-bio" >Passionate software engineer with expertise in web development and a keen interest in UX design. I love building intuitive and impactful digital experiences.</textarea>
+                            </div>
+
+                            <!-- Contact Info -->
+                            <div style="padding: 16px; background: #f9fafb; border-radius: 0.375rem;">
+                                <h2 style="font-size: 2rem; font-weight: 600; color: #111827;">Contact:</h2>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <svg style="color: #6b7280;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-circle-2"><path d="M18 6c-5.33 0-8 2.67-8 8"></path><path d="M13.52 7a4 4 0 1 0-6.04 4.24"></path><circle cx="12" cy="12" r="10"></circle></svg>
+                                    <input type="email" id="edit-profile-email" style="font-size: 1.3rem; border: 1px solid #d1d5db; border-radius: 0.375rem; background: none;" value="jane.smith@example.com" placeholder = "profile-email">
+                                </div>
+                                <br>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <svg style="color: #6b7280;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image"><rect width="20" height="20" x="2" y="2" rx="2.18" ry="2.18"></rect><path d="M12 12l3.5-3.5a2.49 2.49 0 0 1 3.5 0"></path><path d="M15 15l-3-3.38a2.5 2.5 0 0 0-3.8.22L4 18"></path></svg>
+                                    <input type="text" id="edit-profile-link" style="font-size: 1.3rem; border: 1px solid #d1d5db; border-radius: 0.375rem; background: none;" value="https://janesmith.com" placeholder = "profile-link">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+<script src = "scripts/editProfile.js"></script>
+<script src="./scripts/searchAllUsers.js"></script>
+</body>
+</html>
