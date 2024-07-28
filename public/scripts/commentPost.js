@@ -66,7 +66,7 @@ function displayComments(comments) {
                 <option value="view">View All User Comments</option>
             </select>
         `;
- 
+        
         commentContainer.appendChild(commentElement);
     });
 }
