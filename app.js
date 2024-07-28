@@ -59,7 +59,6 @@ app.put("/updateProfile",authenticateToken, userController.updateProfile);
 app.put("/updateComments/:id", commentController.updateComment); 
 
 app.delete("/deleteComments/:id", commentController.deleteComment);
-app.delete('/unlike', likeController.deleteLike);
 app.delete('/deletePost/:postId/:username',postController.deletePost)
 app.delete('/deleteProfile',authenticateToken,userController.deleteProfile);
 app.delete('/deletePost/:postId',postController.deletePost)
