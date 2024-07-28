@@ -105,7 +105,7 @@ values
 insert into Reports(industry, contentType, contentId, reason, reportDate)
 values
 	('Education','Posts', 1, 'Harassment', '2024-06-11'),
-	('Medical', 'Posts', 2, 'Inciting Hate', '2024-06-12'),
-	('Business', 'Posts', 3, 'Copyright Infringement', '2024-06-15');
+	('Agriculture', 'Posts', 2, 'Inciting Hate', '2024-06-12'),
+	('Healthcare', 'Posts', 3, 'Copyright Infringement', '2024-06-15');
 
 /*----------------------------------------------------------------------------------*/
