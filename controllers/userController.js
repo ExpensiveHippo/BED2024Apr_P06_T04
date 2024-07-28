@@ -4,7 +4,33 @@ const bcrypt = require('bcrypt');
 
 require('dotenv').config();
 
-const getProfile = async (req,res) =>{
+const getAllUsernames = async (req,res) =>{
+    try{
+        const usernameArray = await User.getAllUsers();
+        res.json({success: true, usernameArray});
+    }
+    catch(err){
+        console.error(err);
+        res.status(500).json({success: false, message:'Error with fetching usernames'});
+    }
+}
+// user searches a profile through the search engine
+const getSearchedProfile = async (req,res) =>{
+    try{
+        const paramsUsername = req.params.username;
+        const searchedProfile = await User.getUserByUsername(paramsUsername);
+        if(!searchedProfile){
+            return res.status(404).json({message: "User not found", success: false});
+        }
+        res.json({success: true, user: {username: searchedProfile.username, email: searchedProfile.email, bio: searchedProfile.bio, link: searchedProfile.link, role: searchedProfile.role}});
+    }
+    catch(err){
+        console.error('Error fetching searched user profile:', err);
+        res.status(500).json({message: "Error fetching searched user profile", success: false});
+    }
+}
+// signed-in user's profile
+const getSignedInProfile = async (req,res) =>{
     try{
         const username = req.user.username;
         const profileUser = await User.getUserByUsername(username);
@@ -120,7 +146,9 @@ const register = async(req,res) =>{
 module.exports = {
     login,
     register,
-    getProfile,
+    getSignedInProfile,
+    getSearchedProfile,
+    getAllUsernames,
     updateProfile,
     deleteProfile,
 }

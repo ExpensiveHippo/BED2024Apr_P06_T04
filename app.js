@@ -23,8 +23,9 @@ app.get("/Posts/:postId",postController.getPostById)
 app.get("/like/:userId/:contentType/:contentId", likeController.getLike);
 app.get("/Comments",commentController.getAllComments)
 app.get("/Comments/:userId",commentController.getCommentsByUser)
-app.get("/getUser",authenticateToken,userController.getProfile);
-
+app.get("/getUser",authenticateToken,userController.getSignedInProfile);
+app.get("/getSearchedProfile/:username", userController.getSearchedProfile);
+app.get("/getAllUsers",userController.getAllUsernames);
 
 
 app.post("/createPost",authenticateToken, postController.createPost);

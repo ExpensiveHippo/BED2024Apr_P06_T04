@@ -11,7 +11,15 @@ class User{
         this.bio = bio;
         this.link = link;
     }
-
+    //for searching users later
+    static async getAllUsers(){
+        const connection = await sql.connect(dbConfig);
+        const sqlQuery = `SELECT username from Users`
+        const request = connection.request();
+        const result = await request.query(sqlQuery);
+        connection.close()
+        return result.recordset.map(user => user.username);
+    }
     static async getUserByUsername(username){
         const connection = await sql.connect(dbConfig);
         const sqlQuery = `SELECT * from Users where username = @username`;

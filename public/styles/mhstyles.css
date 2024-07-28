@@ -18,6 +18,8 @@ body {
     background-color: #87CEEB;
     font-size: 22px;
     margin-bottom: 20px;
+    position: relative;
+    gap: 1rem;
 }
 
 .nav-bar .logo {
@@ -61,6 +63,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    width: 100%;
 }
 .post-search{
     font-size: 17px;
@@ -297,4 +301,28 @@ main {
 
 #updatePostForm button:hover{
     background-color: #555;
+}
+
+
+.suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-height: 200px; /* Adjust as needed */
+    overflow-y: auto;
+    width: 100%; /* Match the width of the search input */
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.suggestion {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.suggestion:hover {
+    background-color: #f0f0f0;
 }
