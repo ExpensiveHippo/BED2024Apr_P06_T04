@@ -13,7 +13,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert("You are now logged in!")
+            alert("You are now logged in!") 
             localStorage.setItem("userToken",data.accessToken);
             window.location.href = '/post.html'; //enter next page if password is correct
         } else {

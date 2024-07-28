@@ -15,7 +15,10 @@ const authenticateToken = (req,res,next) =>{
             return res.status(403).json({message: "Forbidden"});
         }
         const authorizedRoles = {
-            // TODO: endpoints to be placed here for authorization of certain things
+            "/getUser": ["admin","user"],
+            "/createPost": ["admin","user"],
+            "/getUser": ["admin","user"],
+            "/updatePost/[0-99]": ["admin","user"],
             "/like": ["user", "admin"],
             "/like/[A-Za-z]+/[0-9]+": ["user", "admin"],
             "/unlike": ["user", "admin"],
@@ -26,6 +29,7 @@ const authenticateToken = (req,res,next) =>{
         }
         const requestedEndPoint = req.url;
         const userRole = user.role;
+
         const authorizedRole = Object.entries(authorizedRoles).find(
             ([endpoint, roles]) => {
               const regex = new RegExp(`^${endpoint}$`);
@@ -33,6 +37,8 @@ const authenticateToken = (req,res,next) =>{
             }
         )
       
+    
+
         if (!authorizedRole) {
             return res.status(403).json({ message: "Forbidden" });
         }

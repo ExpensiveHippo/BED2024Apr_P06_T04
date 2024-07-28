@@ -169,3 +169,135 @@ main {
     color: black;
     -webkit-text-stroke: 1px black; /* Keep outline when clicked */
 }
+.dropdown-menu {
+    position: absolute;
+    background-color: white;
+    border: 1px solid black;
+    box-shadow: 0px 5px 5px rgba(0,0,0,0.15);
+    padding: 10px;
+    margin-left: 280px;
+    margin-bottom: -50px;
+    border-radius: 15px;
+    transform: translateY(-70px);
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 8px 12px;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f1f1f1;
+}
+
+#createPostForm{
+    display: flex;
+    margin-top: 20px;
+    padding: 80px;
+    background-color: #fff;
+    border-radius: 50px;
+    margin-left: 70px;
+    margin-right: 70px;
+    flex-direction: column;
+}
+#createPostForm h1{
+    margin-left: 500px;
+}
+#createPostForm input{
+    padding: 20px;
+    margin-bottom: 40px;
+    margin-top: 20px;
+    border-radius: 50px;
+}
+#createPostForm textarea{
+    padding: 20px;
+    padding-top: 20px;
+    padding-bottom: 200px;
+    margin-top: 20px;
+    border-radius: 30px;
+}
+#createPostForm label{
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 50px;
+}
+#createPostForm select{
+    padding: 15px;
+    margin-bottom: 40px;
+    margin-top: 10px;
+    margin-right: 1040px;
+    margin-left: 15px;
+    border-radius: 50px;
+    
+}
+#createPostForm button{
+    padding: 15px;
+    margin-bottom: 40px;
+    margin-top: 10px;
+    margin-right: 460px;
+    margin-left: 500px;
+    border-radius: 50px;
+}
+
+#createPostForm button:hover{
+    background-color: #555;
+}
+
+
+
+
+#updatePostForm{
+    display: flex;
+    margin-top: 20px;
+    padding: 80px;
+    background-color: #fff;
+    border-radius: 50px;
+    margin-left: 70px;
+    margin-right: 70px;
+    flex-direction: column;
+}
+#updatePostForm h1{
+    margin-left: 500px;
+}
+#updatePostForm input{
+    padding: 20px;
+    margin-bottom: 40px;
+    margin-top: 20px;
+    border-radius: 50px;
+}
+#updatePostForm textarea{
+    padding: 20px;
+    padding-top: 20px;
+    padding-bottom: 200px;
+    margin-top: 20px;
+    border-radius: 30px;
+}
+#updatePostForm label{
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 50px;
+}
+#updatePostForm select{
+    padding: 15px;
+    margin-bottom: 40px;
+    margin-top: 10px;
+    margin-right: 1040px;
+    margin-left: 15px;
+    border-radius: 50px;
+    
+}
+#updatePostForm button{
+    padding: 15px;
+    margin-bottom: 40px;
+    margin-top: 10px;
+    margin-right: 460px;
+    margin-left: 500px;
+    border-radius: 50px;
+}
+
+#updatePostForm button:hover{
+    background-color: #555;
+}

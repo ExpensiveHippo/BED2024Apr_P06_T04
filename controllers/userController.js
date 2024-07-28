@@ -4,6 +4,20 @@ const bcrypt = require('bcrypt');
 
 require('dotenv').config();
 
+const getProfile = async (req,res) =>{ 
+    try{ 
+        const username = req.user.username; 
+        const profileUser = await User.getUserByUsername(username); 
+        if (!profileUser){ 
+            return res.status(404).json({message: "User not found", success: false }); 
+        } 
+        res.json({success: true, user: {username: profileUser.username, email: profileUser.email, bio: profileUser.bio, link: profileUser.link, role: profileUser.role}}); 
+    } 
+    catch (err) { 
+        console.error('Error fetching user profile:', err); 
+        res.status(500).json({ message: 'Error fetching user profile', success: false }); 
+    } 
+}
 const login = async(req,res) =>{
     const { username, password } = req.body;
     try{
@@ -45,6 +59,7 @@ const register = async(req,res) =>{
         }
         // authToken generation
         userInfo = {
+            id: user.id,
             username: newUser.username,
             role: newUser.role,
         }
@@ -56,7 +71,9 @@ const register = async(req,res) =>{
         res.status(500).json({ success: false, message: "Server error during registration" });
     }
 }
+
 module.exports = {
     login,
     register,
+    getProfile,
 }

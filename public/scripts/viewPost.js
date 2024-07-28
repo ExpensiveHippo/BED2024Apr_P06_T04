@@ -23,9 +23,14 @@ document.addEventListener('DOMContentLoaded', fetchPosts);
                     data.posts.forEach(post => {
                         const postElement = document.createElement('div');
                         postElement.classList.add('post');
+                        // Truncate content to 50 characters
+                        let truncatedContent = post.content;
+                        if (truncatedContent.length > 50) {
+                            truncatedContent = truncatedContent.substring(0, 120) + '...';
+                        }
                         postElement.innerHTML = `
                             <h2>${post.title}</h2>
-                            <p>${post.content}</p>
+                            <p>${truncatedContent}</p>
                         `;
                         // Add onclick listener to postElement
                         postElement.addEventListener('click', () => {
