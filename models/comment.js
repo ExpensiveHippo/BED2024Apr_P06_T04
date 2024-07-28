@@ -11,16 +11,18 @@ class Comments {
     }
 
     static async getAllComments() {
-        const connection = await sql.connect(dbConfig);
-        const sqlQuery = `SELECT c.userId, c.commentId, c.content,u.username FROM Comments c INNER JOIN Users u ON c.userId = u.id;`;
-        const request = connection.request();
-        const result = await request.query(sqlQuery);
-        connection.close();
-        return result.recordset.map(row => ({
-            commentId: row.commentId,
-            content: row.content,
-            username: row.username
-        }));
+        try {
+            const pool = await sql.connect(dbConfig);
+            const result = await pool.request().query(`
+                SELECT C.commentId, C.userId, C.contentType, C.contentId, C.content, U.username
+                FROM Comments C
+                JOIN Users U ON C.userId = U.id
+            `);
+            return result.recordset;
+        } catch (error) {
+            console.error('Error fetching comments:', error);
+            throw error;
+        }
     }
 
     static async getCommentsByUser(userId) {
@@ -36,42 +38,36 @@ class Comments {
             username: row.username
         }));
     }    
-    
-    static async createComment(newComment) {
-        const connection = await sql.connect(dbConfig);
+    static async updateComment(commentId, content) {
         try {
-            // Insert the comment
-            const insertQuery = `
-                INSERT INTO Comments (userId, contentType, contentId, content)
-                VALUES (@userId, @contentType, @contentId, @content)
-            `;
-            const request = connection.request();
-            request.input("userId", sql.Int, newComment.userId);
-            request.input("contentType", sql.VarChar, newComment.contentType);
-            request.input("contentId", sql.Int, newComment.contentId);
-            request.input("content", sql.VarChar, newComment.content);
-    
-            await request.query(insertQuery);
-    
-            // Retrieve the last inserted ID
-            const idQuery = `SELECT SCOPE_IDENTITY() AS commentId`;
-            const result = await request.query(idQuery);
-            const commentId = result.recordset[0].commentId;
-    
-            // Fetch the inserted comment details
-            return this.getCommentById(commentId);
+            let pool = await sql.connect(dbConfig);
+            let result = await pool.request()
+                .input('commentId', sql.Int, commentId)
+                .input('content', sql.Text, content)
+                .query('UPDATE Comments SET content = @content WHERE commentId = @commentId');
+            return result.rowsAffected[0];
         } catch (error) {
-            console.error(error);
+            console.error("Error updating comment: ", error);
             throw error;
-        } finally {
-            if (connection) {
-                connection.close();
-            }
+        }
+    }    
+    
+    static async createComment(userId, contentType, contentId, content) {
+        try {
+            let pool = await sql.connect(dbConfig);
+            let result = await pool.request()
+                .input('userId', sql.Int, userId)
+                .input('contentType', sql.VarChar, contentType)
+                .input('contentId', sql.Int, contentId)
+                .input('content', sql.Text, content)
+                .query('INSERT INTO Comments (userId, contentType, contentId, content) VALUES (@userId, @contentType, @contentId, @content)');
+            return result.rowsAffected[0];
+        } catch (error) {
+            console.error("Error creating comment: ", error);
+            throw error;
         }
     }
     
-    
-
     static async deleteComment(id) {
         const connection = await sql.connect(dbConfig);
         const sqlQuery = `DELETE FROM Comments WHERE commentId = @id`;

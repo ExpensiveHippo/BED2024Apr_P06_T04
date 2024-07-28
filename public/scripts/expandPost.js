@@ -30,7 +30,7 @@ async function fetchPostDetail() {
             <p>${post.post.content}</p>
             <div class="post-icons">
                 <button class="fas fa-heart"></button>
-                <button class="fas fa-comment"></button>
+                <button class="fas fa-comment" id="commentIcon"></button>
                 <button class="fa fa-ellipsis-v" aria-hidden="true"></button>
             </div>
         `;
@@ -88,6 +88,9 @@ async function fetchPostDetail() {
                 iconLike.classList.toggle('clicked');
             } 
         })
+        iconComment.addEventListener('click', () => {
+            window.location.href = 'comment.html';
+        });
     }   
     catch (error) {
         console.error('Error fetching post details:', error);
