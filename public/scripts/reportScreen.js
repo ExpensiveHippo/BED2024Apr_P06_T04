@@ -69,7 +69,7 @@ async function addReportContainer(token, report) {
                 } else {
                     console.log("deleteReports:error");
                 }})
-            .catch(error => console.error(error))
+            .catch(error => console.error(error))            
         })
 
         const btnIgnore = document.createElement("button");

@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const sql = require("mssql");
 const dbConfig = require("./dbConfig");
 
-
 const authenticateToken = require('./middleware/authUser');
 
 const userController = require("./controllers/userController");
@@ -11,8 +10,6 @@ const postController = require("./controllers/postController");
 const likeController = require("./controllers/likeController");
 const commentController = require("./controllers/commentController");
 const reportController = require("./controllers/reportController");
-
-const authenticateToken = require('./middleware/authUser');
 
 const app = express();
 const port = 3000;
