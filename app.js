@@ -18,15 +18,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public')); // serve static files (HTML, CSS, JS)
 
 
-// Endpoints
-app.get("/Posts",postController.getAllPosts)
-app.get("/Posts/:postId",postController.getPostById)
+// Endpoints/Routes
+app.get("/Posts",postController.getAllPosts);
+app.get("/Posts/:postId",postController.getPostById);
 app.get("/like/:userId/:contentType/:contentId", likeController.getLike);
 app.get("/Comments",commentController.getAllComments)
 app.get("/Comments/:userId",commentController.getCommentsByUser)
 app.get("/getUser",authenticateToken,userController.getSignedInProfile);
 app.get("/getSearchedProfile/:username", userController.getSearchedProfile);
 app.get("/getAllUsers",userController.getAllUsernames);
+
 
 
 app.post("/createPost",authenticateToken, postController.createPost);
@@ -37,6 +38,9 @@ app.post('/createComment', commentController.createComment);
 
 app.put("/updatePost/:postId/:username", postController.updatePost)
 app.put("/updateProfile",validateUser, authenticateToken, userController.updateProfile);
+app.put("/updateComments/:id", commentController.updateComment); 
+
+app.delete("/deleteComments/:id", commentController.deleteComment);
 app.delete('/unlike', likeController.deleteLike);
 app.delete('/deletePost/:postId/:username',postController.deletePost)
 app.delete('/deleteProfile',authenticateToken,userController.deleteProfile);
