@@ -48,4 +48,5 @@ document.addEventListener('DOMContentLoaded', fetchPosts);
                 console.error('Error fetching posts:', error);
             }
         };
+
         
