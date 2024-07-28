@@ -52,7 +52,7 @@ app.post('/createReport', authenticateToken, reportController.createReport);
 
 
 app.put("/updatePost/:postId",authenticateToken, postController.updatePost)
-app.put("/updateProfile",validateUser, authenticateToken, userController.updateProfile);
+app.put("/updateProfile",authenticateToken, userController.updateProfile);
 app.put("/updateComments/:id", commentController.updateComment); 
 
 app.delete("/deleteComments/:id", commentController.deleteComment);

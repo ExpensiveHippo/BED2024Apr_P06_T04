@@ -1,13 +1,13 @@
 require('dotenv').config();
 
 module.exports = {
-    user: "sa",
-    password: "1234567890",
-    server: "localhost",
-    database: "bed_db_asg",
-    trustServerCertificate: true,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    server: process.env.SERVER,
+    database: process.env.DATABASE,
+    trustServerCertificate: process.env.TRUST_SERVER_CERTIFICATE === 'true',
     options: {
-        port: 1433,
-        connectionTimeout: 60000,
+        port: parseInt(process.env.PORT),
+        connectionTimeout: parseInt(process.env.CONNECTION_TIMEOUT)
     }
 }

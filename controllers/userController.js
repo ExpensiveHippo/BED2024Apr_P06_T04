@@ -18,6 +18,7 @@ const getAllUsernames = async (req,res) =>{
 const getSearchedProfile = async (req,res) =>{
     try{
         const paramsUsername = req.params.username;
+        console.log(paramsUsername);
         const searchedProfile = await User.getUserByUsername(paramsUsername);
         if(!searchedProfile){
             return res.status(404).json({message: "User not found", success: false});
@@ -47,6 +48,7 @@ const getSignedInProfile = async (req,res) =>{
 const updateProfile = async (req,res) =>{
     try{
         const username = req.user.username;
+        const currentUser = await User.getUserByUsername(username);
         const {newUsername, newEmail, newBio, newLink} = req.body;
 
         if (username !== newUsername){

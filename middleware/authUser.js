@@ -25,7 +25,7 @@ const authenticateToken = (req,res,next) =>{
             "/reports": ["admin"],
             "/createReport": ["user", "admin"],
             "/deleteReport/[0-9]+": ["admin"],
-            "/deleteReports/[A-Za-z]+/[0-9]+": ["admin"]
+            "/deleteReports/[A-Za-z]+/[0-9]+": ["admin"],
             "/updateProfile": ["admin","user"],
             "/deleteProfile": ["admin","user"],
 

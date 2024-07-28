@@ -8,10 +8,10 @@ document.getElementById('save-changes').addEventListener('click', function(){
     const newProfileEmail = document.getElementById('edit-profile-email').value
     const newProfileBio = document.getElementById('edit-profile-bio').value
     const newProfileLink = document.getElementById('edit-profile-name').value
-    
+
     
     if(token){
-        updateProfile(token,newProfileUsername, newProfileEmail, newProfileBio, newProfileLink);
+        updateProfile(token, newProfileUsername, newProfileEmail, newProfileBio, newProfileLink);
     }
     else{
         console.error('No access token found');
@@ -86,17 +86,18 @@ async function updateProfile(token,newUsername, newEmail, newBio, newLink) {
     await fetch('/updateProfile', {
         method: 'PUT',
         headers: {
+            'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             newUsername: newUsername,
             newEmail: newEmail,
             newBio: bio,
-            newLink: link
+            newLink: link,
         })
     })
     .then(response => {
+        console.log(response);  
         if (!response.ok) {
             throw new Error('Failed to update profile');
         }
