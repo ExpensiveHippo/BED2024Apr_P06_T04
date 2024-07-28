@@ -96,12 +96,48 @@ async function fetchPostDetail(username) {
                 dropdownMenu.style.display = 'none';
             }
         });
-        
+
         // get arguements for Like
         const token = localStorage.getItem('userToken');
         const contentType = "Posts";
         const contentId = postId;
 
+        document.getElementById("kebabReport").addEventListener('click', () => {
+            document.getElementById("reason-container").style.display = "block";
+        })
+
+        document.getElementById("btn-cancel").addEventListener('click', () => {
+            document.getElementById("reason-container").style.display = "none";
+        })
+
+        document.getElementById("btn-submit").addEventListener('click', () => {
+            const reason = document.getElementById("selectReason").value;
+            document.getElementById("reason-container").style.display = "none";
+
+            var body = {
+                industry: "Education",
+                contentType: "Posts",
+                contentId: postId,
+                reason: reason
+            }
+
+            fetch (`/createReport`, {
+                method: "POST",
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(body)
+            })
+            .then(res => {
+                if (res.status === 201) {
+                    console.log("createReport:success");
+                } else {
+                    console.log("createReport:failure");
+                }
+            })
+            .catch(error => console.error(error));
+        })
+        
         fetch(`/like/${contentType}/${contentId}`, {
             headers: {
                 'Authorization': `Bearer ${token}` 
