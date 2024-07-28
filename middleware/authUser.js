@@ -17,7 +17,6 @@ const authenticateToken = (req,res,next) =>{
         const authorizedRoles = {
             "/getUser": ["admin","user"],
             "/createPost": ["admin","user"],
-            "/getUser": ["admin","user"],
             "/updatePost/[0-99]": ["admin","user"],
             "/deletePost/[0-99]": ["admin","user"],
             "/like": ["user", "admin"],
@@ -27,6 +26,9 @@ const authenticateToken = (req,res,next) =>{
             "/createReport": ["user", "admin"],
             "/deleteReport/[0-9]+": ["admin"],
             "/deleteReports/[A-Za-z]+/[0-9]+": ["admin"]
+            "/updateProfile": ["admin","user"],
+            "/deleteProfile": ["admin","user"],
+
         }
         const requestedEndPoint = req.url;
         const userRole = user.role;

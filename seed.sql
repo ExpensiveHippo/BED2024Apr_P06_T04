@@ -30,7 +30,7 @@ create table Posts(
 	
 	constraint PK_Posts primary key (postId),
 	constraint FK_Posts foreign key (id) references Users(id) ON DELETE CASCADE,
-	constraint CHK_Industry CHECK (industry IN ('Healthcare', 'Education', 'Agriculture')) 
+	constraint CHK_Industry CHECK (industry IN ('healthcare', 'education', 'agriculture')) 
 );
 
 create table Comments(
