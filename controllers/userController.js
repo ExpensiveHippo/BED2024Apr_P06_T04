@@ -30,6 +30,7 @@ const login = async(req,res) =>{
         }
 
         const userInfo = {
+            id: user.id,
             username: user.username,
             role: user.role,
         }
@@ -58,6 +59,7 @@ const register = async(req,res) =>{
         }
         // authToken generation
         userInfo = {
+            id: user.id,
             username: newUser.username,
             role: newUser.role,
         }

@@ -172,10 +172,13 @@ main {
 .dropdown-menu {
     position: absolute;
     background-color: white;
-    border: 1px solid #ddd;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    border: 1px solid black;
+    box-shadow: 0px 5px 5px rgba(0,0,0,0.15);
     padding: 10px;
-    z-index: 1000;
+    margin-left: 280px;
+    margin-bottom: -50px;
+    border-radius: 15px;
+    transform: translateY(-70px);
 }
 
 .dropdown-menu a {

@@ -14,6 +14,8 @@ create table Users(
 	email varchar(100) not null,
 	password varchar(100) not null,
 	role varchar(16) not null,
+	bio varchar(255) null,
+	link varchar(100) null,
 
 	constraint PK_Users primary key (id),
 	constraint CK_Users check (role in ('admin', 'user'))
@@ -27,8 +29,8 @@ create table Posts(
 	content text null,
 	
 	constraint PK_Posts primary key (postId),
-	constraint FK_Posts foreign key (id) references Users(id),
-	constraint CHK_Industry CHECK (industry IN ('healthcare', 'education', 'agriculture'))
+	constraint FK_Posts foreign key (id) references Users(id) ON DELETE CASCADE,
+	constraint CHK_Industry CHECK (industry IN ('healthcare', 'education', 'agriculture')) 
 );
 
 create table Comments(
@@ -39,7 +41,7 @@ create table Comments(
 	content text not null,
 
 	constraint PK_Comments primary key (commentId),
-	constraint FK_Comments foreign key (userId) references Users(id),
+	constraint FK_Comments foreign key (userId) references Users(id) ON DELETE CASCADE,
 	constraint CK_Comments check (contentType in ('Comments', 'Posts'))
 );
 
@@ -50,7 +52,7 @@ create table Likes(
 	contentId int not null,
 
 	constraint PK_Likes primary key (likeId),
-	constraint FK_Likes foreign key (userId) references Users(id),
+	constraint FK_Likes foreign key (userId) references Users(id) ON DELETE CASCADE,
 	constraint CK_Likes check (contentType in ('Comments', 'Posts')) 
 );
 

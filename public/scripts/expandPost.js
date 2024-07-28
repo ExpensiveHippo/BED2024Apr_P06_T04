@@ -76,6 +76,8 @@
             if (username === post.post.username) {
                 document.querySelector('.edit-option').style.display = 'block';
                 document.querySelector('.delete-option').style.display = 'block';
+                
+                document.querySelector('.edit-option').href = `updatePost.html?postId=${postId}`;
             } else {
                 document.querySelector('.edit-option').style.display = 'none';
                 document.querySelector('.delete-option').style.display = 'none';

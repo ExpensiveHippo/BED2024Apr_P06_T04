@@ -36,10 +36,10 @@ class Post{
     } 
     static async createPost(newPostData){
         const connection = await sql.connect(dbConfig);
-        const sqlQuery = `INSERT INTO Posts (username,industry,title,content) VALUES(@username,@industry,@title,@content); SELECT SCOPE_IDENTITY() AS postId;`
+        const sqlQuery = `INSERT INTO Posts (id,industry,title,content) VALUES(@id,@industry,@title,@content); SELECT SCOPE_IDENTITY() AS postId;`
 
         const request = connection.request();
-        request.input('username',sql.VarChar,newPostData.username);
+        request.input('id',sql.Int,newPostData.id);
         request.input('industry',sql.VarChar,newPostData.industry)
         request.input('title',sql.VarChar,newPostData.title);
         request.input('content',sql.VarChar,newPostData.content)
@@ -51,19 +51,18 @@ class Post{
         connection.close();
         return this.getPostById(newPostData.postId);
     }
-    static async updatePost(newUpdateData){
+    static async updatePost(newUpdateData,postId){
         const connection = await sql.connect(dbConfig);
-        const sqlQuery = 'UPDATE Posts SET title = @title, content = @content, industry = @industry WHERE username = @username AND postId = @postId;'
+        const sqlQuery = 'UPDATE Posts SET title = @title, content = @content, industry = @industry WHERE postId = @postId;'
 
         const request = connection.request();
-        request.input('postId',sql.Int,newUpdateData.postId);
-        request.input('username',sql.VarChar,newUpdateData.username);
+        request.input('postId',sql.Int,postId)
         request.input('industry',sql.VarChar,newUpdateData.industry)
         request.input('title',sql.VarChar,newUpdateData.title);
         request.input('content',sql.VarChar,newUpdateData.content)
 
         const result = await request.query(sqlQuery);
-        if (result.recordset.length === 0){
+        if (result.rowsAffected === 0){
             throw new Error("Failed to create Post");
         }
         connection.close();
@@ -71,7 +70,7 @@ class Post{
     }
     static async deletePost(username, postId){
         const connection = await sql.connect(dbConfig);
-        const sqlQuery = 'DELETE Posts WHERE postId = @postId AND username = @username'
+        const sqlQuery = 'DELETE Posts WHERE postId = @postId'
 
         const request = connection.request();
         request.input('postId',sql.Int,postId)

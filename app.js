@@ -32,10 +32,10 @@ app.post('/register', userController.register);
 app.post('/like', likeController.createLike);
 app.post('/createComment', commentController.createComment);
 
-app.put("/updatePost/:postId/:username", postController.updatePost)
+app.put("/updatePost/:postId",authenticateToken, postController.updatePost)
 
 app.delete('/unlike', likeController.deleteLike);
-app.delete('/deletePost/:postId/:username',postController.deletePost)
+app.delete('/deletePost/:postId',postController.deletePost)
 
 
 // Start server

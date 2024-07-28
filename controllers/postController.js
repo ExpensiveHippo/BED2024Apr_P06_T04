@@ -25,11 +25,11 @@ const getPostById = async (req, res) => {
     }
 };
 const createPost = async (req, res) => {
-    const username = req.user.username;
+    const id = req.user.id;
     const { industry, title, content } = req.body;
 
     try {
-        const newPost = await Post.createPost({ industry, username, title, content });
+        const newPost = await Post.createPost({ id, industry, title, content });
         res.status(201).json({ success: true, message: "Post created successfully", post: newPost });
     } catch (error) {
         console.error("Error creating post:", error);
@@ -37,10 +37,11 @@ const createPost = async (req, res) => {
     }
 };
 const updatePost = async (req, res) => {
-    const { postId, industry, username, title, content} = req.body;
+    const postId = parseInt(req.params.postId);
+    const { industry, title, content} = req.body;
 
     try {
-        const newUpdate = await Post.updatePost({postId, industry, username, title, content});
+        const newUpdate = await Post.updatePost({ industry, title, content},postId);
         res.status(201).json({ success: true, message: "Post updated successfully", post: newUpdate });
     } catch (error) {
         console.error("Error updating post:", error);
