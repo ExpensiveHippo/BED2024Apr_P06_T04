@@ -1,5 +1,16 @@
 const Report = require("../models/report");
 
+const getReports = async (req, res) => {
+    try {
+        const reports = await Report.getReports();
+        res.json(reports);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error retrieving reports");
+    }
+}
+
+
 const createReport = async (req, res) => {
     const newReport = req.body;
 
@@ -7,17 +18,17 @@ const createReport = async (req, res) => {
         const result = await Report.createReport(newReport);
         res.status(201).json(result);
     }
-    catch {
+    catch (error) {
         console.error(error);
         res.status(500).send("Error creating report");
     }
 }
 
 const deleteReportById = async (req, res) => {
-    const thisReport = req.body;
+    const reportId = parseInt(req.params.reportId);
 
     try {
-        const success = await Report.deleteReportById(thisReport);
+        const success = await Report.deleteReportById(reportId);
 
         if (!success) {
             res.status(404).send("Report not found");
@@ -33,13 +44,14 @@ const deleteReportById = async (req, res) => {
 }
 
 const deleteReportsByContentId = async (req, res) => {
-    const contentId = parseInt(req.params.id);
+    const contentType = req.params.contentType;
+    const contentId = parseInt(req.params.contentId);
 
     try {
-        const succuess = await Report.deleteReportsByContentId(contentId);
+        const success = await Report.deleteReportsByContentId(contentType, contentId);
 
         if (!success) {
-            res.status(404).send(`Reports with contentId ${contentId} not found`);
+            res.status(404).send(`Reports with contentType ${contentType} & contentId ${contentId} not found`);
         } else {
             res.status(204).send();
         }
@@ -50,23 +62,11 @@ const deleteReportsByContentId = async (req, res) => {
     }
 }
 
-const getReportById = async (req, res) => {
-    const reportId = parseInt(req.params.id);
-
-    try {
-        const report = Report.getReportById(reportId);
-        res.json(report);
-    } 
-    catch (error) {
-        console.error(error);
-        res.status(500).send("Error retrieving report");
-    }
-}
 
 module.exports = {
+    getReports,
     createReport,
     deleteReportById,
-    deleteReportsByContentId,
-    getReportById
+    deleteReportsByContentId
 }
 
