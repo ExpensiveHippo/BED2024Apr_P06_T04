@@ -24,11 +24,11 @@ app.use(express.static('public')); // serve static files (HTML, CSS, JS)
 app.get("/getUser",authenticateToken,userController.getProfile);
 app.get("/Posts",postController.getAllPosts);
 app.get("/Posts/:postId",postController.getPostById);
+app.get("/Posts/:industry",postController.getPostByIndustry);
 app.get("/Comments",commentController.getAllComments);
 app.get("/Comments/:userId",commentController.getCommentsByUser);
 app.get("/like/:contentType/:contentId", authenticateToken, likeController.getLike);
 app.get("/reports", authenticateToken, reportController.getReports);
-app.get("/Posts/:title");
 
 app.post("/createPost",authenticateToken, postController.createPost);
 app.post('/login', userController.login);

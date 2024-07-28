@@ -25,6 +25,23 @@ class Post{
         )
         : null;
     } 
+    static async getPostByIndustry(industry){
+        const connection = await sql.connect(dbConfig);
+        const sqlQuery = `SELECT p.postId,  u.username, p.title, p.content from Posts p inner join Users u on p.Id = u.Id where p.industry = @industry`;
+        const request =  connection.request();
+        request.input('industry',sql.VarChar,industry);
+        const result =  await request.query(sqlQuery);
+        connection.close();
+
+        return result.recordset[0] 
+        ? new Post(
+            result.recordset[0].postId,
+            result.recordset[0].username,
+            result.recordset[0].title,
+            result.recordset[0].content
+        )
+        : null;
+    } 
     static async getAllPost(){
         const connection = await sql.connect(dbConfig);
         const sqlQuery = `SELECT * from Posts`;
@@ -81,22 +98,5 @@ class Post{
         }
         return result.rowsAffected > 0;
     }
-    static async getPostByTitle(titleParams){
-        const connection = await sql.connect(dbConfig);
-        const sqlQuery = `SELECT p.postId,  u.username, p.title, p.content from Posts p inner join Users u on p.Id = u.Id  where p.title like @titleParams%;`;
-        const request =  connection.request();
-        request.input('titleParams',sql.VarChar,titleParams);
-        const result =  await request.query(sqlQuery);
-        connection.close();
-
-        return result.recordset[0] 
-        ? new Post(
-            result.recordset[0].postId,
-            result.recordset[0].username,
-            result.recordset[0].title,
-            result.recordset[0].content
-        )
-        : null;
-    } 
 }
 module.exports = Post;
