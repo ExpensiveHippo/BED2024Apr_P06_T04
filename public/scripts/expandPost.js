@@ -56,7 +56,7 @@ async function fetchPostDetail(username) {
             console.error('Post detail container not found.');
             return;
         }
-
+      
         console.log(username)
 
         postDetailContainer.innerHTML = `
@@ -77,16 +77,17 @@ async function fetchPostDetail(username) {
         if (username === post.post.username) {
             document.querySelector('.edit-option').style.display = 'block';
             document.querySelector('.delete-option').style.display = 'block';
-            
+
             document.querySelector('.edit-option').href = `updatePost.html?postId=${postId}`;
+            document.querySelector('.delete-option').href = `deletePost.html?postId=${postId}`;
         } else {
             document.querySelector('.edit-option').style.display = 'none';
             document.querySelector('.delete-option').style.display = 'none';
         }
-
+      
         // Toggle dropdown menu visibility
         iconKebab.addEventListener('click', () => {
-            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+        dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
         });
 
         // Handle click outside to close dropdown
@@ -95,8 +96,6 @@ async function fetchPostDetail(username) {
                 dropdownMenu.style.display = 'none';
             }
         });
-
-        // !------------------------------------------------NEED TO CHECK IF USER HAS LIKED POST BEFORE
         
         // get arguements for Like
         const token = localStorage.getItem('userToken');

@@ -19,6 +19,7 @@ const authenticateToken = (req,res,next) =>{
             "/createPost": ["admin","user"],
             "/getUser": ["admin","user"],
             "/updatePost/[0-99]": ["admin","user"],
+            "/deletePost/[0-99]": ["admin","user"],
             "/like": ["user", "admin"],
             "/like/[A-Za-z]+/[0-9]+": ["user", "admin"],
             "/unlike": ["user", "admin"],

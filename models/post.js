@@ -68,13 +68,12 @@ class Post{
         connection.close();
         return this.getPostById(newUpdateData.postId)
     }
-    static async deletePost(username, postId){
+    static async deletePost(postId){
         const connection = await sql.connect(dbConfig);
-        const sqlQuery = 'DELETE Posts WHERE postId = @postId'
+        const sqlQuery = "DELETE FROM Likes WHERE contentType = 'Posts' AND contentId = @postId; DELETE FROM Comments WHERE contentType = 'Posts' AND contentId = @postId;DELETE FROM Posts WHERE postId = @postId;"
 
         const request = connection.request();
         request.input('postId',sql.Int,postId)
-        request.input('username',sql.VarChar,username)
 
         const result = await request.query(sqlQuery);
         if (result.rowsAffected === 0){
@@ -82,5 +81,22 @@ class Post{
         }
         return result.rowsAffected > 0;
     }
+    static async getPostByTitle(titleParams){
+        const connection = await sql.connect(dbConfig);
+        const sqlQuery = `SELECT p.postId,  u.username, p.title, p.content from Posts p inner join Users u on p.Id = u.Id  where p.title like @titleParams%;`;
+        const request =  connection.request();
+        request.input('titleParams',sql.VarChar,titleParams);
+        const result =  await request.query(sqlQuery);
+        connection.close();
+
+        return result.recordset[0] 
+        ? new Post(
+            result.recordset[0].postId,
+            result.recordset[0].username,
+            result.recordset[0].title,
+            result.recordset[0].content
+        )
+        : null;
+    } 
 }
 module.exports = Post;
