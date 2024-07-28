@@ -1,5 +1,16 @@
 const Report = require("../models/report");
 
+const getReports = async (req, res) => {
+    try {
+        const reports = await Report.getReports();
+        res.json(reports);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error retrieving reports");
+    }
+}
+
+
 const createReport = async (req, res) => {
     const newReport = req.body;
 
@@ -53,6 +64,7 @@ const deleteReportsByContentId = async (req, res) => {
 
 
 module.exports = {
+    getReports,
     createReport,
     deleteReportById,
     deleteReportsByContentId

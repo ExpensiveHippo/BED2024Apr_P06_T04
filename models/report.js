@@ -2,13 +2,37 @@ const SQL = require("mssql");
 const DBCONFIG = require("../dbConfig");
 
 class Report {
-    constructor(reportId, contentType, contentId, industry, reason, reportDateTime) {
+    constructor(reportId, contentType, contentId, industry, reason, reportDate) {
         this.reportId = reportId;
         this.contentType = contentType;
         this.contentId = contentId;
         this.industry = industry;
         this.reason = reason;
-        this.reportDateTime = reportDateTime;
+        this.reportDate = reportDate;
+    }
+
+    // called when admin goes to report page
+    static async getReports() {
+        const connection = await SQL.connect(DBCONFIG);
+        try {
+            const sqlQuery = `SELECT * FROM Reports`;
+            const result = await connection.request().query(sqlQuery); 
+            return result.recordset[0] ? result.recordset.map(row => new Report(
+                row.reportId, 
+                row.contentType, 
+                row.contentId,
+                row.industry,
+                row.reason,
+                row.reportDate
+            )) : null;
+        }
+        catch (error) {
+            console.error(error);
+            throw error;
+        }
+        finally {
+            connection.close();
+        }
     }
 
     // called when a user reports a content (article/comment)
@@ -93,7 +117,7 @@ class Report {
                 result.recordset[0].contentId,
                 result.recordset[0].industry,
                 result.recordset[0].reason,
-                result.recordset[0].reportDateTime
+                result.recordset[0].reportDate
             ) : null;
         }
         catch (error) {

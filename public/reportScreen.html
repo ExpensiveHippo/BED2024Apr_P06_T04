@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/reportScreen.css">
+    <script src="scripts/reportScreen.js" defer></script>
+    <title>ReportScreen</title>
+  </head>
+  <body>
+    <div class="report-box" id="report-box">
+      <h1>Reports</h1>
+    </div>
+
+    <div class="filter-box">
+      <h2 class="filter-header">Filter Reports</h2>
+
+      <div class="filter-container">
+        <label htmlFor="sort">Sort</label>
+        <select id="sort">
+          <option value="Most Recent">Most Recent</option>
+          <option value="Least Recent">Least Recent</option>
+        </select>
+      </div>
+      
+      <div class="filter-container"> 
+        <label htmlFor="content">Content</label>
+        <select id="content">
+          <option value="All">All</option>
+          <option value="Posts">Posts</option>
+          <option value="Comments">Comments</option>
+        </select>
+      </div>
+
+      <div class="filter-container">
+        <label htmlFor="industry">Industry</label>
+        <select id="industry">
+          <option value="All">All</option>
+          <option value="Education">Education</option>
+          <option value="Healthcare">Healthcare</option>
+          <option value="Agriculture">Agriculture</option>
+        </select>
+      </div>
+
+      <button class="btn-apply" id="btn-apply">Apply Filters</button>
+    </div>
+  </body>
+</html>

@@ -29,16 +29,6 @@ create table Posts(
 	constraint FK_Posts foreign key (username) references Users(username)
 );
 
-create table Likes(
-	userId int not null,
-	contentType varchar(8) not null,
-	contentId int not null,
-
-	constraint PK_Likes primary key (userId, contentType, contentId),
-	constraint FK_Likes foreign key (userId) references Users(id),
-	constraint CK_Likes check (contentType in ('Comments', 'Posts')) 
-);
-
 create table Comments(
 	commentId int identity(172,1),
 	userId int not null,
@@ -115,7 +105,7 @@ values
 insert into Reports(industry, contentType, contentId, reason, reportDate)
 values
 	('Education','Posts', 1, 'Harassment', '2024-06-11'),
-	('Medical', 'Posts', 1, 'Inciting Hate', '2024-06-12'),
-	('Business', 6, 'Harassment', '2024-06-15');
+	('Medical', 'Posts', 2, 'Inciting Hate', '2024-06-12'),
+	('Business', 'Posts', 3, 'Copyright Infringement', '2024-06-15');
 
 /*----------------------------------------------------------------------------------*/

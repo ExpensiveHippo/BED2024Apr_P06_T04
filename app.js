@@ -27,6 +27,7 @@ app.get("/Posts/:postId",postController.getPostById);
 app.get("/Comments",commentController.getAllComments);
 app.get("/Comments/:userId",commentController.getCommentsByUser);
 app.get("/like/:contentType/:contentId", authenticateToken, likeController.getLike);
+app.get("/reports", authenticateToken, reportController.getReports);
 
 
 app.post("/createPost", postController.createPost);
