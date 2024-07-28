@@ -355,9 +355,42 @@ main {
 #delete-button:hover {
     background-color: darkgrey;
 }
+
 .modal-content p{
     margin-left: 40px;
     font-weight: bold;
     font-size: 25px;
     margin-top: 70px;
+}
+
+#reason-container {
+    width: 30%;
+    padding: 32px;
+    margin: 0 auto 0;
+    border: 2px solid #000;
+    background-color: #fff;
+    display: none;
+}
+
+#selectReason {
+    width: 100%;
+    padding: 8px;
+    margin-top: 12px;
+    margin-bottom: 24px;
+}
+
+#btn-cancel {
+    background-color: #1a202c;
+    color: #fff;
+    padding: 8px 16px;
+    border: 0;
+    border-radius: 4px;
+}
+
+#btn-submit {
+    background-color: #88cc11;
+    color: #fff;
+    padding: 8px 16px;
+    border: 0;
+    border-radius: 4px;
 }
